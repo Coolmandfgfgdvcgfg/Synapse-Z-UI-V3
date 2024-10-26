@@ -7,19 +7,31 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
+    <ApplicationIcon>synlogo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Images\codeico.png" />
+    <None Remove="Images\executeimage.png" />
     <None Remove="Images\settingsic.png" />
+    <None Remove="Images\synlogo.ico" />
     <None Remove="Images\synlogo.png" />
     <None Remove="Images\synlogowhite.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="synlogo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2895-prerelease" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\codeico.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\executeimage.png" />
     <Resource Include="Images\settingsic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
