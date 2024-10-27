@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -23,6 +24,7 @@ namespace Synapse_Z_V3
 
         public MainWindow()
         {
+            new Mutex(true, "ROBLOX_singletonMutex");
             InitializeComponent();
             InitializeWebView();
             this.Title = GenerateRandomTitle();
@@ -302,5 +304,9 @@ namespace Synapse_Z_V3
             }
         }
 
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

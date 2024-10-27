@@ -9,12 +9,15 @@
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>synlogo.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>True</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Images\andrew_tate_emotional_speech.mov" />
     <None Remove="Images\bookmark.png" />
     <None Remove="Images\bracketico.png" />
+    <None Remove="Images\codeic.png" />
     <None Remove="Images\Drive.png" />
     <None Remove="Images\executeimage.png" />
     <None Remove="Images\fileback.png" />
@@ -37,6 +40,7 @@
     <Resource Include="Images\andrew_tate_emotional_speech.mov" />
     <Resource Include="Images\bookmark.png" />
     <Resource Include="Images\bracketico.png" />
+    <Resource Include="Images\codeic.png" />
     <Resource Include="Images\Drive.png" />
     <Resource Include="Images\filebackexecute.png" />
   </ItemGroup>
