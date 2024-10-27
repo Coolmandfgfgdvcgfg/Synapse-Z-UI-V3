@@ -5,15 +5,17 @@
         Title="MainWindow" 
         Height="380" 
         Width="800"
-        MinWidth="400" 
-        MinHeight="300" 
+        MinWidth="800" 
+        MinHeight="380" 
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
+
         ResizeMode="CanResizeWithGrip">
+
     <Border Background="#252525" 
-            CornerRadius="3" 
+            CornerRadius="5" 
             BorderBrush="Gray" 
             BorderThickness="0.5" 
             SnapsToDevicePixels="True">
@@ -26,27 +28,26 @@
             </Grid.RowDefinitions>
 
             <!-- Title Bar for Dragging -->
-            <Grid Background="#252525" MouseDown="TitleBar_MouseDown">
+            <Grid Background="#252525" MouseDown="TitleBar_MouseDown" Panel.ZIndex="4" Margin="0,0,0,344" Grid.RowSpan="2" VerticalAlignment="Top">
                 <Image Source="Images/synlogowhite.png" 
                        Width="138" Height="41"
-                       HorizontalAlignment="Left" 
-                       VerticalAlignment="Center" Margin="4,0,0,0"/>
-                <TextBlock VerticalAlignment="Top" Margin="118,4,429,0" Foreground="White" FontWeight="Bold" Height="26" FontSize="9" FontFamily="Calibri"><Run Text="Z UI "/><LineBreak/><Run Text="V2.0.0"/></TextBlock>
-                <Grid Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                       HorizontalAlignment="Left" Margin="4,-3,0,0" VerticalAlignment="Top"/>
+                <TextBlock VerticalAlignment="Top" Margin="118,6,429,0" Foreground="White" FontWeight="Bold" Height="26" FontSize="9" FontFamily="Calibri"><Run Text="Z UI "/><LineBreak/><Run Text="V2.0.0"/></TextBlock>
+                <Grid Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,-1,0,1">
                         <Button Style="{StaticResource TabButtonStyle}" x:Name="Button1" Width="20" Height="20" Background="Transparent" 
                                 BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Margin="0,0,8,0">
-                            <Image Source="Images/codeico.png" Stretch="Uniform"/>
+                            <Image Source="Images/bracketico.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
                         </Button>
                         <Button Style="{StaticResource TabButtonStyle}" x:Name="Button2" Width="20" Height="20" 
                                 BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Background="#00000000">
-                            <Image Source="Images/settingsic.png" Stretch="Uniform"/>
+                            <Image Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
                         </Button>
                     </StackPanel>
                     <Rectangle x:Name="Underline" Fill="White" Height="2" Width="20" 
-                               HorizontalAlignment="Left" Margin="0, 28, 0, 0" />
+                               HorizontalAlignment="Left" Margin="0,30,0,-2" />
                 </Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0">
                     <Button x:Name="Minimize" Style="{StaticResource WindowButtonStyle}" Content="─" 
                 Width="30" Height="30" Background="Transparent" 
                 Foreground="White" FontSize="16" FontFamily="Corbel Light" 
@@ -62,27 +63,160 @@
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid x:Name="EditorPage" Grid.Row="1" Margin="0,5,0,0" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="163*"/>
-                    <ColumnDefinition Width="490*"/>
-                    <ColumnDefinition Width="91*"/>
-                    <ColumnDefinition Width="56*"/>
+                    <ColumnDefinition Width="174*"/>
+                    <ColumnDefinition Width="478*"/>
+                    <ColumnDefinition Width="44*"/>
+                    <ColumnDefinition Width="97*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="Auto" MinWidth="0"/>
                 </Grid.ColumnDefinitions>
+
+
                 <!-- Content goes here -->
-                <Wpf:WebView2 x:Name="TemporyWebview" HorizontalAlignment="Left" Height="309" VerticalAlignment="Top" Width="697" Grid.ColumnSpan="3" Margin="1,-4,0,0"/>
-                <Grid Margin="0,305,46,0" Grid.ColumnSpan="3">
-                    <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-                        <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F" Foreground="White" FontFamily="Calibri" FontWeight="Normal">
+                <Grid Grid.ColumnSpan="2" Margin="0,0,3,39" Background="AliceBlue" Grid.RowSpan="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Wpf:WebView2 x:Name="TemporyWebview" Grid.Column="0" Grid.ColumnSpan="2"/>
+                </Grid>
+                <Grid x:Name="ButtonTray" Margin="0,305,46,0" Grid.ColumnSpan="4">
+                    <StackPanel Orientation="Horizontal" Margin="3,0,0,0" VerticalAlignment="Bottom" Height="39">
+                        <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F" >
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/executeimage.png" Width="12" Height="10" Margin="0,0,5,0" />
-                                <TextBlock Text="Execute" />
+                                <Image Source="Images/executeimage.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Execute" Height="14" />
                             </StackPanel>
                         </Button>
-
+                        <Button x:Name="Clear" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F" >
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/TrashcanSmoothed.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Clear" Height="14" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="Open" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/fileback.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Open" Height="14" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="ExecuteFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/filebackexecute.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Execute" Height="14" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="SaveFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/saveic.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Save" Height="14" Foreground="White" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
+                <Grid Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="5" Width="152" Background="#FF252525" Margin="473,0,0,0" HorizontalAlignment="Right">
+                    <Grid.Effect>
+                        <DropShadowEffect BlurRadius="6" ShadowDepth="4" Direction="180" Opacity="0.2" Color="Black" />
+                    </Grid.Effect>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
+                  PanningMode="Both" Width="152" Background="#00000000" HorizontalAlignment="Left">
+                        <StackPanel Width="152" HorizontalAlignment="Right">
+                            <!-- Local Filesystem Section -->
+                            <ToggleButton Style="{StaticResource MainToggleButtonStyle}" 
+                          x:Name="ToggleLocalFiles" 
+                          Background="#FF3A3A3A" 
+                          FontWeight="Bold" 
+                          Foreground="#FFC0C0C0" 
+                          Height="28" 
+                          Margin="0,2" 
+                          Padding="6" 
+                          IsChecked="False" 
+                          Checked="ToggleButton_Checked" 
+                          Unchecked="ToggleButton_Unchecked" 
+                          HorizontalAlignment="Stretch" 
+                          BorderThickness="0" 
+                          Width="140">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/Drive.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <TextBlock Text="Local Filesystem" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                    <!-- Adjusted VerticalAlignment -->
+                                </StackPanel>
+                            </ToggleButton>
+                            <StackPanel x:Name="LocalFilesItems" Visibility="Visible" Opacity="0" Height="0" >
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="File 1" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="File 2" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="File 3" Padding="10,2" />
+                            </StackPanel>
+
+
+                            <!-- Bookmarks Section -->
+                            <ToggleButton Style="{StaticResource MainToggleButtonStyle}" 
+                          x:Name="ToggleBookmarks" 
+                          Background="#FF3A3A3A" 
+                          FontWeight="Bold" 
+                          Foreground="#FFC0C0C0" 
+                          Height="28" 
+                          Margin="0,2" 
+                          Padding="6" 
+                          IsChecked="False" 
+                          Checked="ToggleButton_Checked" 
+                          Unchecked="ToggleButton_Unchecked" 
+                          HorizontalAlignment="Stretch" 
+                          BorderThickness="0" 
+                          Width="140">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/bookmark.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <TextBlock Text="Bookmarks" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                    <!-- Adjusted VerticalAlignment -->
+                                </StackPanel>
+                            </ToggleButton>
+                            <StackPanel x:Name="BookmarksItems" Visibility="Visible" Opacity="0" Height="0" >
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Bookmark 1" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Bookmark 2" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Bookmark 3" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Bookmark 4" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Bookmark 5" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Bookmark 6" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Bookmark 7" Padding="10,2" />
+                            </StackPanel>
+
+                            <!-- Github Gists Section -->
+                            <ToggleButton Style="{StaticResource MainToggleButtonStyle}" 
+                          x:Name="ToggleGists" 
+                          Background="#FF3A3A3A" 
+                          FontWeight="Bold" 
+                          Foreground="#FFC0C0C0" 
+                          Height="28" 
+                          Margin="0,2" 
+                          Padding="6" 
+                          IsChecked="False" 
+                          Checked="ToggleButton_Checked" 
+                          Unchecked="ToggleButton_Unchecked" 
+                          BorderThickness="0" 
+                          Width="140">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/github.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <TextBlock Text="Github Gists" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                    <!-- Adjusted VerticalAlignment -->
+                                </StackPanel>
+                            </ToggleButton>
+                            <StackPanel x:Name="GistsItems" Visibility="Visible" Opacity="0" Height="0" >
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Gist 1" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Gist 2" Padding="10,2" />
+                                <ListBoxItem Style="{StaticResource CustomListBoxItemStyle}" Content="Gist 3" Padding="10,2" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+            </Grid>
+            <Grid x:Name="SettingsPage" Grid.Row="1" Margin="0,5,0,0">
+                <Label x:Name="TimeLeft" Content="Label" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Foreground="White"/>
             </Grid>
         </Grid>
     </Border>

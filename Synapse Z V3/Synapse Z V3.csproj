@@ -8,15 +8,25 @@
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>synlogo.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\codeico.png" />
+    <None Remove="Images\andrew_tate_emotional_speech.mov" />
+    <None Remove="Images\bookmark.png" />
+    <None Remove="Images\bracketico.png" />
+    <None Remove="Images\Drive.png" />
     <None Remove="Images\executeimage.png" />
-    <None Remove="Images\settingsic.png" />
+    <None Remove="Images\fileback.png" />
+    <None Remove="Images\filebackexecute.png" />
+    <None Remove="Images\github.png" />
+    <None Remove="Images\saveic.png" />
+    <None Remove="Images\settingscog.png" />
+    <None Remove="Images\sirmeme.mov" />
     <None Remove="Images\synlogo.ico" />
     <None Remove="Images\synlogo.png" />
     <None Remove="Images\synlogowhite.png" />
+    <None Remove="Images\TrashcanSmoothed.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,17 +34,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\andrew_tate_emotional_speech.mov" />
+    <Resource Include="Images\bookmark.png" />
+    <Resource Include="Images\bracketico.png" />
+    <Resource Include="Images\Drive.png" />
+    <Resource Include="Images\filebackexecute.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2895-prerelease" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\codeico.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <ProjectReference Include="..\SyzZAPI\SynZAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\executeimage.png" />
-    <Resource Include="Images\settingsic.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Images\fileback.png" />
+    <Resource Include="Images\github.png" />
+    <Resource Include="Images\saveic.png" />
+    <Resource Include="Images\settingscog.png" />
+    <Resource Include="Images\sirmeme.mov" />
     <Resource Include="Images\synlogowhite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -42,6 +63,7 @@
 
   <ItemGroup>
     <Resource Include="Images\synlogo.png" />
+    <Resource Include="Images\TrashcanSmoothed.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,26 +1,56 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using SynZAPI;
 
 namespace Synapse_Z_V3
 {
     public partial class MainWindow : Window
     {
+        Functions synapseZAPI = new Functions();
         private bool _isResizing = false; // Track if resizing is active
         private Point _startPoint;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.MinWidth = 600;  // Set minimum width
-            this.MinHeight = 300; // Set minimum height
-
-            // Randomize window name on startup
-            this.Title = GenerateRandomTitle();
             InitializeWebView();
+            this.Title = GenerateRandomTitle();
+            InitializeAsync();
+        }
+
+        private async void InitializeAsync()
+        {
+            try
+            {
+                string loaderPath = synapseZAPI.GetLoader();
+                System.Diagnostics.Debug.WriteLine("Loader Path: " + loaderPath);
+
+                // Await the async method to get account info
+                string accountInfo = await synapseZAPI.GetAccountInfoAsync();
+                System.Diagnostics.Debug.WriteLine("Account Info: " + accountInfo);
+
+                // Update UI safely
+                TimeLeft.Content = accountInfo;
+            }
+            catch (FileNotFoundException fnfEx)
+            {
+                System.Diagnostics.Debug.WriteLine("File not found: " + fnfEx.Message);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("An error occurred: " + ex.Message);
+            }
         }
 
         private async void InitializeWebView()
@@ -37,7 +67,8 @@ namespace Synapse_Z_V3
                 if (args.IsSuccess)
                 {
                     // Call the SetTheme function with "studio" as an argument
-                    string script = "SetTheme('studio'); switchMinimap(true);";
+                    string newprint = "print(\"Hello Sigma\")";
+                    string script = "SetTheme('studio'); switchMinimap(true); SetText('" + newprint + "');";
                     await TemporyWebview.CoreWebView2.ExecuteScriptAsync(script);
                 }
             };
@@ -72,7 +103,7 @@ namespace Synapse_Z_V3
             {
                 // Update the size of the window based on the current mouse position
                 var mousePos = Mouse.GetPosition(this);
-                this.Width = Math.Max(200, mousePos.X);
+                this.Width = Math.Max(150, mousePos.X);
                 this.Height = Math.Max(100, mousePos.Y);
             }
             else
@@ -118,7 +149,16 @@ namespace Synapse_Z_V3
             if (clickedButton != null)
             {
                 double targetX = clickedButton == Button1 ? 0 : 28;
-
+                if (clickedButton == Button1)
+                {
+                    EditorPage.Visibility = Visibility.Visible;
+                    SettingsPage.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    EditorPage.Visibility = Visibility.Collapsed;
+                    SettingsPage.Visibility = Visibility.Visible;
+                }
                 ThicknessAnimation marginAnimation = new ThicknessAnimation
                 {
                     To = new Thickness(targetX, 28, 0, 0),
@@ -189,7 +229,78 @@ namespace Synapse_Z_V3
             // Minimize the window
             this.WindowState = WindowState.Minimized;
         }
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton toggleButton)
+            {
+                // Determine which ToggleButton was clicked and show the corresponding items
+                if (toggleButton == ToggleLocalFiles)
+                {
+                    AnimateVisibility(LocalFilesItems, true);
+                }
+                else if (toggleButton == ToggleBookmarks)
+                {
+                    AnimateVisibility(BookmarksItems, true);
+                }
+                else if (toggleButton == ToggleGists)
+                {
+                    AnimateVisibility(GistsItems, true);
+                }
+            }
+        }
 
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton toggleButton)
+            {
+                // Determine which ToggleButton was clicked and hide the corresponding items
+                if (toggleButton == ToggleLocalFiles)
+                {
+                    AnimateVisibility(LocalFilesItems, false);
+                }
+                else if (toggleButton == ToggleBookmarks)
+                {
+                    AnimateVisibility(BookmarksItems, false);
+                }
+                else if (toggleButton == ToggleGists)
+                {
+                    AnimateVisibility(GistsItems, false);
+                }
+            }
+        }
+
+        private void AnimateVisibility(FrameworkElement element, bool isVisible)
+        {
+            // Set the desired visibility state
+            element.Visibility = isVisible ? Visibility.Visible : Visibility.Visible; // Set to visible for animation
+
+            // Create animations
+            var fadeAnimation = new DoubleAnimation
+            {
+                From = isVisible ? 0 : 1,
+                To = isVisible ? 1 : 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(300)), // Animation duration
+                FillBehavior = FillBehavior.HoldEnd
+            };
+
+            var heightAnimation = new DoubleAnimation
+            {
+                From = isVisible ? 0 : element.ActualHeight,
+                To = isVisible ? element.ActualHeight : 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(300)), // Animation duration
+                FillBehavior = FillBehavior.HoldEnd
+            };
+
+            // Apply animations
+            element.BeginAnimation(UIElement.OpacityProperty, fadeAnimation);
+            element.BeginAnimation(FrameworkElement.HeightProperty, heightAnimation);
+
+            // Set final visibility after animation completion
+            if (!isVisible)
+            {
+                fadeAnimation.Completed += (s, _) => element.Visibility = Visibility.Collapsed;
+            }
+        }
 
     }
 }

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse Z V3", "Synapse Z V3\Synapse Z V3.csproj", "{64143775-C7C7-4A4E-82FA-40D712C5A2CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse Z V3", "Synapse Z V3\Synapse Z V3.csproj", "{64143775-C7C7-4A4E-82FA-40D712C5A2CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynZAPI", "SyzZAPI\SynZAPI.csproj", "{D113CB43-73B3-4677-A506-A1EC7E962A2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{64143775-C7C7-4A4E-82FA-40D712C5A2CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64143775-C7C7-4A4E-82FA-40D712C5A2CE}.Release|x64.ActiveCfg = Release|x64
 		{64143775-C7C7-4A4E-82FA-40D712C5A2CE}.Release|x64.Build.0 = Release|x64
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Debug|x64.Build.0 = Debug|Any CPU
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Release|x64.ActiveCfg = Release|Any CPU
+		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -126,5 +126,127 @@
             </Setter>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         </Style>
+        <Style x:Key="MainToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="114"/>
+            <Setter Property="Height" Value="31"/>
+            <Setter Property="Background" Value="#FF2B2B2B"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Yu Gothic UI"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="5">
+                            <Grid>
+                                <ContentPresenter 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"/>
+                                <Border x:Name="HoverVisual" 
+                                CornerRadius="5"  
+                                Background="Gray" 
+                                Opacity="0.3" 
+                                Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Visible"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="0.5"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#FF4CAF50"/>
+                                <!-- Bright green for checked state -->
+                                <Setter Property="BorderBrush" Value="#FF4CAF50"/>
+                                <!-- Match border color with background -->
+                                <Setter Property="Foreground" Value="White"/>
+                                <!-- Keep text white -->
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="HoverVisual" Property="Background" Value="LightGray"/>
+                                <Setter TargetName="HoverVisual" Property="Opacity" Value="0.5"/>
+                                <Setter Property="BorderBrush" Value="#3B3B3A"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="False">
+                                <Setter TargetName="HoverVisual" Property="Background" Value="Gray"/>
+                                <Setter TargetName="HoverVisual" Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+        <Style x:Key="CustomListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="border" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF3A3A3A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="CustomTabStyle" TargetType="TabItem">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="8"
+                        Padding="10,5">
+                            <ContentPresenter 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover effect -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="DarkGray"/>
+                            </Trigger>
+                            <!-- Selected effect -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#FF2B2B2B"/>
+                                <Setter Property="BorderBrush" Value="White"/>
+                            </Trigger>
+                            <!-- Focus effect -->
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="Yellow"/>
+                                <!-- Example focus color -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
 </Application>
