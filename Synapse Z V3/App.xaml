@@ -19,12 +19,62 @@
                     <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2"/>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="Gray"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
+
+
+
+        <Style x:Key="TabToggleButtonStyle2" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid.Effect>
+                                <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3" />
+                            </Grid.Effect>
+
+                            <!-- VisualStateManager for Animations -->
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="border" 
+                                                     Storyboard.TargetProperty="Opacity" 
+                                                     To="1" Duration="0:0:0.3" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unchecked">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="border" 
+                                                     Storyboard.TargetProperty="Opacity" 
+                                                     To="0" Duration="0:0:0.3" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <!-- Main Background -->
+                            <Rectangle Fill="#FF252525" RadiusX="4" RadiusY="4" />
+
+                            <!-- Content Presenter -->
+                            <ContentPresenter 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+
+                            <!-- Rounded Border with Opacity for Fading Effect -->
+                            <Rectangle x:Name="border" Stroke="#ADD8E6" StrokeThickness="2" RadiusX="4" RadiusY="4" 
+                               Opacity="0" Fill="Transparent"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+
 
 
 
@@ -217,10 +267,10 @@
             <Setter Property="Height" Value="31"/>
             <Setter Property="Background" Value="#FF2B2B2B"/>
             <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="BorderThickness" Value="0.25"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontFamily" Value="Yu Gothic UI"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="#FF9D9D9D"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -235,7 +285,7 @@
                                     VerticalAlignment="Center"/>
                                 <Border x:Name="HoverVisual" 
                                         CornerRadius="5"  
-                                    Background="Gray" 
+                                    Background="#FF2B2B2B"
                                         Opacity="0.3" 
                                         Visibility="Collapsed"/>
                             </Grid>
@@ -331,11 +381,12 @@
         </Style>
 
 
-
         <Style x:Key="CustomListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <!-- Added left margin -->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
@@ -351,6 +402,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
 
 
         <Style x:Key="CustomTabStyle" TargetType="TabItem">

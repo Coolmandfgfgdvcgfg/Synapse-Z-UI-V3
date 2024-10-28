@@ -86,8 +86,14 @@ namespace SynZAPI
 
         public async Task<string> GetAccountInfoAsync()
         {
-            // Get the account info string, e.g., "12 days 5 hours"
+            // Get the account info string, e.g., "12 days 5 hours" or "Your license is expired"
             string accountInfo = await RunLoaderAsync("info");
+
+            // Check for expired license message
+            if (accountInfo.Equals("Your license is expired", StringComparison.OrdinalIgnoreCase))
+            {
+                return accountInfo; // Return the expired message directly
+            }
 
             // Split the account info string to extract days and hours
             var parts = accountInfo.Split(' ');

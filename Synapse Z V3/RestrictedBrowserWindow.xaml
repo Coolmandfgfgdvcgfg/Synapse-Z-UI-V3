@@ -1,0 +1,14 @@
+﻿<Window x:Name="Documentation" x:Class="Synapse_Z_V3.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="Documentation" Height="600" Width="800" ResizeMode="CanResize" Topmost="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <wpf:WebView2 Name="WebView2Control" Grid.ColumnSpan="2" />
+        <!-- Ensure the WebView2 control is named properly -->
+    </Grid>
+</Window>

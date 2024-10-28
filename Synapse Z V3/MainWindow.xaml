@@ -76,47 +76,57 @@
 
 
                 <!-- Content goes here -->
-                <Grid Grid.ColumnSpan="2" Margin="0,0,3,39" Background="AliceBlue" Grid.RowSpan="5">
+                <Grid Grid.ColumnSpan="4" Margin="0,0,3,39" Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Wpf:WebView2 x:Name="TemporyWebview" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Wpf:WebView2 x:Name="TemporyWebview" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,140,0"/>
                 </Grid>
-                <Grid x:Name="ButtonTray" Margin="0,305,46,0" Grid.ColumnSpan="4">
-                    <StackPanel Orientation="Horizontal" Margin="3,0,0,0" VerticalAlignment="Bottom" Height="39">
-                        <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F" >
+                <Grid x:Name="ButtonTray" Margin="0,305,46,0" Grid.ColumnSpan="4" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="39" HorizontalAlignment="Left" Margin="69,0,0,0" Width="575">
+                        <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/executeimage.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <Image Source="Images/Execute.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Execute" Height="14" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="Clear" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F" >
+                        <Button x:Name="Clear" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/TrashcanSmoothed.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Clear" Height="14" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="Open" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F">
+                        <Button x:Name="Open" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="108">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/fileback.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Open" Height="14" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="ExecuteFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F">
+                        <Button x:Name="ExecuteFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/filebackexecute.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
-                                <TextBlock Text="Execute" Height="14" />
+                                <TextBlock Text="Execute File" Height="14" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="SaveFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF2F2F2F">
+                        <Button x:Name="SaveFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/saveic.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
-                                <TextBlock Text="Save" Height="14" Foreground="White" />
+                                <TextBlock Text="Save File" Height="14" Foreground="#FF9D9D9D" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
+                    <StackPanel  x:Name="SmallButtons" Margin="5,0,678,0" Orientation="Horizontal">
+                        <Button MouseLeave="Button_MouseLeave" Click="OpenWebPageButton_Click" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0">
+                            <Image Source="Images/bookico.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
+                        </Button>
+                        <Button MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0">
+                            <Image Source="Images/inject.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
+                        </Button>
+                    </StackPanel>
+
+
                 </Grid>
                 <Grid Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="5" Width="152" Background="#FF252525" Margin="473,0,0,0" HorizontalAlignment="Right">
                     <Grid.Effect>
@@ -215,32 +225,96 @@
                 </Grid>
 
             </Grid>
-            <Grid x:Name="SettingsPage" Grid.Row="1" Margin="0,5,0,0">
+            <Grid x:Name="SettingsPage" Grid.Row="1" Margin="0,5,0,0" Visibility="Visible">
                 <Label x:Name="TimeLeft" Content="You have 0 days and 0 hours left of your subscription." HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" Height="24" Margin="0,320,0,0"/>
                 <Grid x:Name="SectionContainer" Background="#FF252525" Panel.ZIndex="2" HorizontalAlignment="Left" Width="49">
                     <Grid.Effect>
                         <DropShadowEffect BlurRadius="6" ShadowDepth="4" Direction="0" Opacity="0.2" Color="Black" />
                     </Grid.Effect>
+                    <StackPanel x:Name="IconStack" Orientation="Vertical" Margin="0">
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="EditorScrollButton">
+                            <Image Source="Images/codeic.png" Margin="3" />
+                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="InjectionScrollButton">
+                            <Image Source="Images/inject.png" Margin="3" />
+                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="ConfigScrollButton">
+                            <Image Source="Images/settingscog.png" Margin="3" />
+                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="GeneralScrollButton">
+                            <Image Source="Images/wrench.png" Margin="3" />
+                        </ToggleButton>
+                    </StackPanel>
+
+
 
                 </Grid>
-                <Grid x:Name="TopDropshadow" Background="#FF252525" Margin="0,-38,0,0" Panel.ZIndex="1" VerticalAlignment="Top" Height="40">
+                <Grid x:Name="TopDropshadow" Background="#FF252525" Margin="36,-27,0,0" Panel.ZIndex="1" VerticalAlignment="Top" Height="29">
                     <Grid.Effect>
                         <DropShadowEffect BlurRadius="6" ShadowDepth="4" Direction="-90" Opacity="0.2" Color="Black" />
                     </Grid.Effect>
 
                 </Grid>
-                <ScrollViewer Margin="54,0,5,24" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
-              PanningMode="Both" Background="#00000000">
+                <ScrollViewer x:Name="CheckboxesSettings" 
+               Margin="54,0,5,24" 
+               VerticalScrollBarVisibility="Hidden" 
+               HorizontalScrollBarVisibility="Disabled"
+               PanningMode="Both" 
+               Background="#00000000"  
+               ScrollChanged="CheckboxesSettings_ScrollChanged">
                     <StackPanel>
-                        <Border Style="{StaticResource SettingBorderStyle}" Width="NaN">
-                            <StackPanel Orientation="Horizontal" Background="Transparent">
-                                <Image Source="Images/codeic.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0"/>
+                        <Border x:Name="EditorScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
+                            <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
+                                <Image Source="Images/codeic.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
                                 <Label Content="Editor" FontSize="18" FontFamily="Yu Gothic UI" 
-               Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176"/>
+               Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
-                        <CheckBox Content="Configure Minimap" Tag="Configure if the editor Minimap is off or on" 
-                  Style="{StaticResource CustomCheckBoxStyle}" Checked="CheckBox_Checked" IsChecked="True"/>
+                        <CheckBox x:Name="MinimapToggle" Content="Configure Minimap" Tag="Configure if the editor Minimap is off or on" 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                        <Border x:Name="InjectionScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
+                            <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
+                                <Image Source="Images/Inject.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
+                                <Label Content="Injection" FontSize="18" FontFamily="Yu Gothic UI" 
+               Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </Border>
+                        <CheckBox x:Name="AutoInjectToggle" Content="Auto Inject" Tag="Configure if Synapse Z will auto inject if a instance of Roblox is detected" 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                      
+                        <Border x:Name="ConfigScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
+                            <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
+                                <Image Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
+                                <Label Content="Configuration" FontSize="18" FontFamily="Yu Gothic UI" 
+               Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </Border>
+                        <CheckBox x:Name="TransparencyToggle" Content="Toggle Fade" Tag="Configure if the window will fade to translucent when not focused" 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                        <CheckBox x:Name="TopmostToggle" Content="Toggle Topmost" Tag="Configure if the window will top most or not" 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                        <CheckBox x:Name="RandomizeToggle" Content="Randomize Window Name" Tag="Configure if the window will have a randomized name or not" 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                        <Border x:Name="GeneralScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
+                            <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
+                                <Image Source="Images/wrench.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
+                                <Label Content="General" FontSize="18" FontFamily="Yu Gothic UI" 
+               Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </Border>
+                        <Button x:Name="RedeemKeyButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/key.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Redeem Key" Height="14" Foreground="#FF9D9D9D" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="RefreshButton" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/clock.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Refresh Subscription Time" Height="14" Foreground="#FF9D9D9D" />
+                            </StackPanel>
+                        </Button>
+
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

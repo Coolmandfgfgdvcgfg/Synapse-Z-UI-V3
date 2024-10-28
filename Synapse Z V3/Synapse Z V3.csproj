@@ -15,14 +15,18 @@
 
   <ItemGroup>
     <None Remove="Images\andrew_tate_emotional_speech.mov" />
+    <None Remove="Images\bookico.png" />
     <None Remove="Images\bookmark.png" />
     <None Remove="Images\bracketico.png" />
+    <None Remove="Images\clock.png" />
     <None Remove="Images\codeic.png" />
     <None Remove="Images\Drive.png" />
-    <None Remove="Images\executeimage.png" />
+    <None Remove="Images\Execute.png" />
     <None Remove="Images\fileback.png" />
     <None Remove="Images\filebackexecute.png" />
     <None Remove="Images\github.png" />
+    <None Remove="Images\inject.png" />
+    <None Remove="Images\key.png" />
     <None Remove="Images\saveic.png" />
     <None Remove="Images\settingscog.png" />
     <None Remove="Images\sirmeme.mov" />
@@ -30,6 +34,7 @@
     <None Remove="Images\synlogo.png" />
     <None Remove="Images\synlogowhite.png" />
     <None Remove="Images\TrashcanSmoothed.png" />
+    <None Remove="Images\wrench.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +42,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\clock.png" />
+    <Resource Include="Images\Execute.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\andrew_tate_emotional_speech.mov" />
+    <Resource Include="Images\bookico.png" />
     <Resource Include="Images\bookmark.png" />
     <Resource Include="Images\bracketico.png" />
     <Resource Include="Images\codeic.png" />
@@ -54,9 +65,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\executeimage.png" />
     <Resource Include="Images\fileback.png" />
     <Resource Include="Images\github.png" />
+    <Resource Include="Images\inject.png" />
+    <Resource Include="Images\key.png" />
     <Resource Include="Images\saveic.png" />
     <Resource Include="Images\settingscog.png" />
     <Resource Include="Images\sirmeme.mov" />
@@ -68,6 +80,7 @@
   <ItemGroup>
     <Resource Include="Images\synlogo.png" />
     <Resource Include="Images\TrashcanSmoothed.png" />
+    <Resource Include="Images\wrench.png" />
   </ItemGroup>
 
   <ItemGroup>
