@@ -131,6 +131,27 @@ namespace Synapse_Z_V3
             }
         }
 
+        private async void UpdateAccountInfoAsync(object sender, RoutedEventArgs e)
+        {
+            TimeLeft.Content = "...";
+            try
+            {
+                // Await the async method to get account info
+                string accountInfo = await synapseZAPI.GetAccountInfoAsync();
+
+                TimeLeft.Content = accountInfo;
+            }
+            catch (FileNotFoundException fnfEx)
+            {
+                System.Diagnostics.Debug.WriteLine("File not found: " + fnfEx.Message);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("An error occurred: " + ex.Message);
+            }
+        }
+
+
         private async void InitializeWebView()
         {
             await TemporyWebview.EnsureCoreWebView2Async(null);
@@ -155,71 +176,6 @@ namespace Synapse_Z_V3
                 }
             };
         }
-
-        // Variable to track if a page is currently selected
-        private bool isPageSelected = false;
-
-        private void ToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            var clickedButton = sender as ToggleButton;
-
-            // If a page is already selected, do not allow unchecking
-            if (isPageSelected && clickedButton.IsChecked == false)
-            {
-                clickedButton.IsChecked = true; // Keep it checked
-                return; // Exit the method
-            }
-
-            // Scroll to the page associated with the clicked button
-            if (clickedButton.IsChecked == true)
-            {
-                ScrollToSection(clickedButton);
-
-                // Set the flag to indicate a page is selected
-                isPageSelected = true;
-
-                // Uncheck other buttons
-                foreach (var child in IconStack.Children)
-                {
-                    if (child is ToggleButton toggleButton && toggleButton != clickedButton)
-                    {
-                        toggleButton.IsChecked = false; // This will trigger the animation
-                    }
-                }
-            }
-            else
-            {
-                // Allow unchecking the page if it was the only selected button
-                isPageSelected = false; // Reset the flag
-            }
-        }
-
-        private void ScrollToSection(ToggleButton toggleButton)
-        {
-            // Get the section associated with the clicked ToggleButton
-            FrameworkElement section = null;
-
-            // Find the corresponding section for the clicked ToggleButton
-            if (toggleButton == EditorScrollButton)
-                section = EditorScroll;
-            else if (toggleButton == InjectionScrollButton)
-                section = InjectionScroll;
-            else if (toggleButton == ConfigScrollButton)
-                section = ConfigScroll;
-
-            // Scroll to the section
-            if (section != null)
-            {
-                // Get the top position of the section relative to the ScrollViewer
-                GeneralTransform transform = section.TransformToAncestor(CheckboxesSettings);
-                Point sectionPosition = transform.Transform(new Point(0, 0));
-                double topOffset = sectionPosition.Y;
-
-                // Scroll to the top of the section
-                CheckboxesSettings.ScrollToVerticalOffset(topOffset);
-            }
-        }
-
 
 
 
@@ -552,9 +508,11 @@ namespace Synapse_Z_V3
             var sectionDistances = new Dictionary<ToggleButton, double>();
 
             // Calculate the distances for each section
-            sectionDistances[EditorScrollButton] = CalculateNearestDistance(EditorScroll, visibleTopY, visibleBottomY);
-            sectionDistances[InjectionScrollButton] = CalculateNearestDistance(InjectionScroll, visibleTopY, visibleBottomY);
-            sectionDistances[ConfigScrollButton] = CalculateNearestDistance(ConfigScroll, visibleTopY, visibleBottomY);
+            sectionDistances[EditorScrollButton] = CalculateNearestDistanceToTop(EditorScroll, visibleTopY, visibleBottomY);
+            sectionDistances[InjectionScrollButton] = CalculateNearestDistanceToTop(InjectionScroll, visibleTopY, visibleBottomY);
+            sectionDistances[ConfigScrollButton] = CalculateNearestDistanceToTop(ConfigScroll, visibleTopY, visibleBottomY);
+            sectionDistances[GeneralScrollButton] = CalculateNearestDistanceToTop(GeneralScroll, visibleTopY, visibleBottomY);
+
 
             // Find the ToggleButton with the closest distance to top or bottom
             var closestButton = sectionDistances.OrderBy(kvp => kvp.Value).FirstOrDefault().Key;
@@ -565,8 +523,7 @@ namespace Synapse_Z_V3
                 button.IsChecked = (button == closestButton);
             }
         }
-
-        private double CalculateNearestDistance(FrameworkElement element, double visibleTopY, double visibleBottomY)
+        private double CalculateNearestDistanceToTop(FrameworkElement element, double visibleTopY, double visibleBottomY)
         {
             // Get the element's top position relative to ScrollViewer
             GeneralTransform transform = element.TransformToAncestor(CheckboxesSettings);
@@ -574,12 +531,18 @@ namespace Synapse_Z_V3
             double elementTopY = elementPosition.Y;
             double elementBottomY = elementTopY + element.ActualHeight;
 
-            // Calculate distance to top and bottom
+            // Calculate distance to top
             double distanceToTop = Math.Abs(elementTopY - visibleTopY);
-            double distanceToBottom = Math.Abs(elementBottomY - visibleBottomY);
 
-            // Return the smaller of the two distances
-            return Math.Min(distanceToTop, distanceToBottom);
+            // If the element's bottom is close to the visible bottom, return the distance to the bottom instead
+            if (elementBottomY >= visibleBottomY)
+            {
+                double distanceToBottom = Math.Abs(elementBottomY - visibleBottomY);
+                return distanceToBottom;
+            }
+
+            // Otherwise, return the distance to the top
+            return distanceToTop;
         }
 
 

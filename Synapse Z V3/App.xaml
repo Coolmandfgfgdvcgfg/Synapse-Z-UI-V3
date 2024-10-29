@@ -11,7 +11,7 @@
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="0.5"/>
             <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="Margin" Value="0,5"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Effect">
@@ -188,7 +188,7 @@
                                       BorderBrush="White"
                                       BorderThickness="1"
                                       HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch">
+                                      VerticalAlignment="Stretch" Cursor="Hand">
                                     <ToggleButton.Style>
                                         <Style TargetType="ToggleButton">
                                             <Setter Property="Template">

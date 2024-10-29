@@ -36,11 +36,11 @@
                 <Grid Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,-1,0,1">
                         <Button Style="{StaticResource TabButtonStyle}" x:Name="Button1" Width="20" Height="20" Background="Transparent" 
-                                BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Margin="0,0,8,0">
+                                BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Margin="0,0,8,0" Cursor="Hand">
                             <Image Source="Images/bracketico.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
                         </Button>
                         <Button Style="{StaticResource TabButtonStyle}" x:Name="Button2" Width="20" Height="20" 
-                                BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Background="#00000000">
+                                BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Background="#00000000" Cursor="Hand">
                             <Image Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
                         </Button>
                     </StackPanel>
@@ -118,10 +118,10 @@
                         </Button>
                     </StackPanel>
                     <StackPanel  x:Name="SmallButtons" Margin="5,0,678,0" Orientation="Horizontal">
-                        <Button MouseLeave="Button_MouseLeave" Click="OpenWebPageButton_Click" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0">
+                        <Button MouseLeave="Button_MouseLeave" Click="OpenWebPageButton_Click" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Cursor="Hand">
                             <Image Source="Images/bookico.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
                         </Button>
-                        <Button MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0">
+                        <Button MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Cursor="Hand">
                             <Image Source="Images/inject.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
                         </Button>
                     </StackPanel>
@@ -232,17 +232,17 @@
                         <DropShadowEffect BlurRadius="6" ShadowDepth="4" Direction="0" Opacity="0.2" Color="Black" />
                     </Grid.Effect>
                     <StackPanel x:Name="IconStack" Orientation="Vertical" Margin="0">
-                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="EditorScrollButton">
-                            <Image Source="Images/codeic.png" Margin="3" />
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5"  x:Name="EditorScrollButton" IsEnabled="False">
+                            <Image Source="Images/codeic.png" Margin="5" />
                         </ToggleButton>
-                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="InjectionScrollButton">
-                            <Image Source="Images/inject.png" Margin="3" />
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" x:Name="InjectionScrollButton" IsEnabled="False">
+                            <Image Source="Images/inject.png" Margin="5" />
                         </ToggleButton>
-                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="ConfigScrollButton">
-                            <Image Source="Images/settingscog.png" Margin="3" />
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" x:Name="ConfigScrollButton" IsEnabled="False">
+                            <Image Source="Images/settingscog.png" Margin="5" />
                         </ToggleButton>
-                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" Click="ToggleButton_Click" x:Name="GeneralScrollButton">
-                            <Image Source="Images/wrench.png" Margin="3" />
+                        <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" x:Name="GeneralScrollButton" IsEnabled="False">
+                            <Image Source="Images/wrench.png" Margin="5" />
                         </ToggleButton>
                     </StackPanel>
 
@@ -262,6 +262,8 @@
                PanningMode="Both" 
                Background="#00000000"  
                ScrollChanged="CheckboxesSettings_ScrollChanged">
+
+
                     <StackPanel>
                         <Border x:Name="EditorScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
                             <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
@@ -308,7 +310,7 @@
                                 <TextBlock Text="Redeem Key" Height="14" Foreground="#FF9D9D9D" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="RefreshButton" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
+                        <Button Click="UpdateAccountInfoAsync" x:Name="RefreshButton" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/clock.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Refresh Subscription Time" Height="14" Foreground="#FF9D9D9D" />
