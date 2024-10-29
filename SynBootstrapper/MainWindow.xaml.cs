@@ -22,7 +22,7 @@ namespace SynBootstrapper
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
     }
 }
