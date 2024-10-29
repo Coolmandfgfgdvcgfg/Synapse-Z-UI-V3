@@ -18,9 +18,9 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <AssemblyName>SynapseUI</AssemblyName>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutDir>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows\UI-bin</OutDir>
+    <OutDir>$(ProjectDir)build\UI-bin</OutDir>
     <Copyright>SC</Copyright>
-    <PackageOutputPath>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows\UI-bin</PackageOutputPath>
+    <PackageOutputPath>$(ProjectDir)build\UI-bin</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,9 +6,9 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>synlogo.ico</ApplicationIcon>
     <AssemblyName>Synapse Bootstrapper</AssemblyName>
-    <BaseOutputPath>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows</BaseOutputPath>
-<PackageOutputPath>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows</PackageOutputPath>
-<OutDir>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows</OutDir>
+   <BaseOutputPath>$(ProjectDir)build</BaseOutputPath>
+<PackageOutputPath>$(ProjectDir)build</PackageOutputPath>
+<OutDir>$(ProjectDir)build</OutDir>
 <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
