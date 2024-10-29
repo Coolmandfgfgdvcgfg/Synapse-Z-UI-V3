@@ -114,5 +114,10 @@ namespace SynZAPI
             // If the format is not as expected, return an error or default message
             return "Account information is not in the expected format.";
         }
+
+        public void ResetHWID()
+        {
+            RunLoaderAsync("resethwid");
+        }
     }
 }

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>synlogo.ico</ApplicationIcon>
+    <AssemblyName>Synapse Bootstrapper</AssemblyName>
+    <BaseOutputPath>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows</BaseOutputPath>
+<PackageOutputPath>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows</PackageOutputPath>
+<OutDir>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows</OutDir>
+<ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\synlogoupscaled.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="synlogo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\synlogoupscaled.png" />
+  </ItemGroup>
+
+</Project>

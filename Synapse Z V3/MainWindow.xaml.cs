@@ -18,7 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.Generic;
-
+using System.Reflection;
 
 namespace Synapse_Z_V3
 {
@@ -157,7 +157,7 @@ namespace Synapse_Z_V3
             await TemporyWebview.EnsureCoreWebView2Async(null);
 
             // Load the local HTML file
-            string htmlFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "editor.html");
+            string htmlFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "editor.html");
             TemporyWebview.Source = new Uri(htmlFilePath);
 
             // Wait for the document to load
@@ -617,6 +617,9 @@ namespace Synapse_Z_V3
             }
         }
 
-
+        private void ResetHwidClick(object sender, RoutedEventArgs e)
+        {
+            synapseZAPI.ResetHWID();
+        }
     }
 }

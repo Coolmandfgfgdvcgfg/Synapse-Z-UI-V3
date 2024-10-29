@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup Label="Globals">
+    <WebView2DispatchAdapterOutputDir></WebView2DispatchAdapterOutputDir>
+  </PropertyGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
@@ -11,6 +15,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <SignAssembly>False</SignAssembly>
     <DelaySign>True</DelaySign>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <AssemblyName>SynapseUI</AssemblyName>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutDir>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows\UI-bin</OutDir>
+    <Copyright>SC</Copyright>
+    <PackageOutputPath>C:\Users\Lande\Downloads\CustomWebsocketUI\Synapse Z V3\Synapse Z V3\bin\Debug\net6.0-windows\UI-bin</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +28,7 @@
     <None Remove="Images\bookico.png" />
     <None Remove="Images\bookmark.png" />
     <None Remove="Images\bracketico.png" />
+    <None Remove="Images\chip.png" />
     <None Remove="Images\clock.png" />
     <None Remove="Images\codeic.png" />
     <None Remove="Images\Drive.png" />
@@ -39,6 +50,10 @@
 
   <ItemGroup>
     <Content Include="synlogo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\chip.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,6 +107,93 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Monaco\editor.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\base\worker\workerMain.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\base\worker\workerMain.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\lua.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.de.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.de.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.es.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.es.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.fr.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.fr.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.it.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.it.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.ja.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.ja.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.ko.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.ko.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.ru.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.ru.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.zh-cn.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.zh-cn.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.zh-tw.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\editor\editor.main.nls.zh-tw.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\loader.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\loader.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

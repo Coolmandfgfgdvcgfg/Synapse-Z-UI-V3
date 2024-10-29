@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse Z V3", "Synapse Z V
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynZAPI", "SyzZAPI\SynZAPI.csproj", "{D113CB43-73B3-4677-A506-A1EC7E962A2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynBootstrapper", "SynBootstrapper\SynBootstrapper.csproj", "{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Release|x64.ActiveCfg = Release|Any CPU
 		{D113CB43-73B3-4677-A506-A1EC7E962A2C}.Release|x64.Build.0 = Release|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Debug|x64.Build.0 = Debug|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Release|x64.ActiveCfg = Release|Any CPU
+		{0C0CBC13-A556-4ACC-A85A-4B373BCAD614}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

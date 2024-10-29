@@ -304,16 +304,22 @@
                Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
-                        <Button x:Name="RedeemKeyButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
+                        <Button  x:Name="RedeemKeyButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/key.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Redeem Key" Height="14" Foreground="#FF9D9D9D" />
                             </StackPanel>
                         </Button>
-                        <Button Click="UpdateAccountInfoAsync" x:Name="RefreshButton" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
+                        <Button Click="UpdateAccountInfoAsync" x:Name="RefreshButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/clock.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Refresh Subscription Time" Height="14" Foreground="#FF9D9D9D" />
+                            </StackPanel>
+                        </Button>
+                        <Button Click="ResetHwidClick" x:Name="ResetHWIDButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/chip.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <TextBlock Text="Reset HWID" Height="14" Foreground="#FF9D9D9D" />
                             </StackPanel>
                         </Button>
 
