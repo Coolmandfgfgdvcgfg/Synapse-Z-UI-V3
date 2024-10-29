@@ -18,9 +18,9 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <AssemblyName>SynapseUI</AssemblyName>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutDir>$(ProjectDir)build\UI-bin</OutDir>
+    <OutDir>$(SolutionDir)build\UI-bin</OutDir>
     <Copyright>SC</Copyright>
-    <PackageOutputPath>$(ProjectDir)build\UI-bin</PackageOutputPath>
+    <PackageOutputPath>$(SolutionDir)build\UI-bin</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

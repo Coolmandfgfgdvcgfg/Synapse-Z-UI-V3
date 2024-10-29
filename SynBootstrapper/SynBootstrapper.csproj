@@ -6,9 +6,9 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>synlogo.ico</ApplicationIcon>
     <AssemblyName>Synapse Bootstrapper</AssemblyName>
-   <BaseOutputPath>$(ProjectDir)build</BaseOutputPath>
-<PackageOutputPath>$(ProjectDir)build</PackageOutputPath>
-<OutDir>$(ProjectDir)build</OutDir>
+   <BaseOutputPath>$(SolutionDir)build</BaseOutputPath>
+<PackageOutputPath>$(SolutionDir)build</PackageOutputPath>
+<OutDir>$(SolutionDir)build</OutDir>
 <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
