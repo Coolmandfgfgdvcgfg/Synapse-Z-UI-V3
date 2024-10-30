@@ -62,7 +62,7 @@ namespace Synapse_Z_V3
             DoubleAnimation fadeInAnimation = new DoubleAnimation
             {
                 To = 1, // Fade in to full opacity
-                Duration = TimeSpan.FromMilliseconds(500),
+                Duration = TimeSpan.FromMilliseconds(250),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };
 
@@ -74,7 +74,7 @@ namespace Synapse_Z_V3
             {
                 To = Height, // Slide down to the height of the window
                 Duration = TimeSpan.FromMilliseconds(500),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+                EasingFunction = new CircleEase { EasingMode = EasingMode.EaseInOut }
             };
 
             // Create the fade out animation for the splash screen
