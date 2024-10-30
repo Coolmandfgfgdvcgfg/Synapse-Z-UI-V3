@@ -12,20 +12,61 @@
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
 
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="NoResize">
 
     <Border Background="#252525" 
             CornerRadius="5" 
             BorderBrush="Gray" 
             BorderThickness="0.5" 
             SnapsToDevicePixels="True">
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid x:Name="MainWindowGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <!-- Fixed height for title bar -->
                 <RowDefinition Height="*"/>
                 <!-- Fill remaining space for content -->
             </Grid.RowDefinitions>
+
+            <Grid x:Name="SplashScreen"  Background="#252525" Panel.ZIndex="100" Grid.RowSpan="2" Visibility="Collapsed">
+                <Label x:Name="Flag" Margin="0,322,0,0" Content="" Panel.ZIndex="101" FontSize="30" HorizontalAlignment="Left" Width="100" VerticalAlignment="Bottom" />
+                <Border ClipToBounds="True">
+                    <Image Source="Images/synbackdrop.jpg" Stretch="UniformToFill" Margin="0,-51,0,-48" />
+                </Border>
+
+
+
+                <!-- Your rotating white path -->
+                <Path Width="50" Height="50" Stretch="Fill" Fill="White" 
+          Data="M20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4C12.76,4 13.5,4.11 14.2,4.31L15.77,2.74C14.61,2.26 13.34,2 12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12" 
+          RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,231,0,0">
+                    <Path.RenderTransform>
+                        <RotateTransform />
+                    </Path.RenderTransform>
+
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="True">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                        Storyboard.TargetProperty="RenderTransform.Angle"
+                                        From="0"
+                                        To="360"
+                                        Duration="0:0:1"
+                                        RepeatBehavior="Forever" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+            </Grid>
+
+
 
             <!-- Title Bar for Dragging -->
             <Grid Background="#252525" MouseDown="TitleBar_MouseDown" Panel.ZIndex="4" Margin="0,0,0,344" Grid.RowSpan="2" VerticalAlignment="Top">
@@ -283,7 +324,7 @@
                         </Border>
                         <CheckBox x:Name="AutoInjectToggle" Content="Auto Inject" Tag="Configure if Synapse Z will auto inject if a instance of Roblox is detected" 
                   Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
-                      
+
                         <Border x:Name="ConfigScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
                             <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
                                 <Image Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
@@ -326,6 +367,8 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
+            <Image HorizontalAlignment="Center" Height="100" Margin="0,138,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
+            <Image HorizontalAlignment="Left" Height="100" Margin="296,121,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
         </Grid>
     </Border>
 </Window>

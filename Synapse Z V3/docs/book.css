@@ -1,0 +1,13 @@
+
+p .hljs {
+  padding: 0em !important;
+}
+
+pre .language-ts {
+  padding: 1em !important;
+  overflow-x: hidden;
+}
+
+h2, h3 {
+  margin-top: 0 !important;
+}

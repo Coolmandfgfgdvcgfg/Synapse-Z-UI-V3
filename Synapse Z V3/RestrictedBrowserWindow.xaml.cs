@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 
 namespace Synapse_Z_V3
@@ -14,8 +15,12 @@ namespace Synapse_Z_V3
         private async void WebView2BrowserWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await WebView2Control.EnsureCoreWebView2Async(null); // Ensure the control is initialized
-            string url = "https://synapse-z.netlify.app/docs/"; // Specify the URL to open
-            WebView2Control.Source = new Uri(url); // Set the source of the WebView2 control
+
+            // Get the path to the local HTML file
+            string localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "docs", "index.html");
+            Uri localFileUri = new Uri(localFilePath); // Create a URI for the local file
+
+            WebView2Control.Source = localFileUri; // Set the source of the WebView2 control
         }
     }
 }

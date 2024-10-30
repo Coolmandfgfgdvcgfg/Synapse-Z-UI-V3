@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Windows.Media.Effects;
 
 namespace Synapse_Z_V3
 {
@@ -31,25 +32,107 @@ namespace Synapse_Z_V3
 
         public MainWindow()
         {
-
             Mutex mutex = new Mutex(true, "ROBLOX_singletonMutex");
 
-            InitializeComponent();  // Make sure this is called first
-
-            InitializeWebView();
-
+          
+            InitializeComponent();  // Initialize the UI components
+            InitializeAsync();
+            AnimateSplashScreen();  // Start the splash screen animation
+            SplashScreen.Visibility = Visibility.Visible;
             EditorPage.Visibility = Visibility.Visible;
             SettingsPage.Visibility = Visibility.Collapsed;
-            InitializeCheckboxStates();
-            InitializeAsync();
+        }
 
+
+        private async void AnimateSplashScreen()
+        {
+            // Initial delay to display the splash screen for 1 second
+            await Task.Delay(1000);
+            InitializeWebView();
+            // Create a BlurEffect and set its initial radius
+            BlurEffect blurEffect = new BlurEffect
+            {
+                Radius = 10 // Adjust the blur intensity as needed
+            };
+
+            // Apply the blur effect to the MainWindowGrid
+            MainWindowGrid.Effect = blurEffect;
+
+            // Create the fade-in animation for the blur effect
+            DoubleAnimation fadeInAnimation = new DoubleAnimation
+            {
+                To = 1, // Fade in to full opacity
+                Duration = TimeSpan.FromMilliseconds(500),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            // Apply fade-in to the MainWindowGrid
+            MainWindowGrid.BeginAnimation(UIElement.OpacityProperty, fadeInAnimation);
+
+            // Create the slide down animation for the splash screen
+            DoubleAnimation slideDownAnimation = new DoubleAnimation
+            {
+                To = Height, // Slide down to the height of the window
+                Duration = TimeSpan.FromMilliseconds(500),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            // Create the fade out animation for the splash screen
+            DoubleAnimation fadeOutAnimation = new DoubleAnimation
+            {
+                To = 0, // Fade to transparent
+                Duration = TimeSpan.FromMilliseconds(500),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            // Set the RenderTransform for the SplashScreen
+            SplashScreen.RenderTransform = new TranslateTransform();
+
+            // Begin the slide down animation
+            SplashScreen.RenderTransform.BeginAnimation(TranslateTransform.YProperty, slideDownAnimation);
+
+            // Begin the fade out animation
+            SplashScreen.BeginAnimation(UIElement.OpacityProperty, fadeOutAnimation);
+
+            // Wait for the duration of the splash screen animations
+            await Task.Delay(250); // Match the duration of the animations
+
+            // Create the fade out animation for the blur effect
+            DoubleAnimation fadeOutBlurAnimation = new DoubleAnimation
+            {
+                To = 0, // Fade out to no blur
+                Duration = TimeSpan.FromMilliseconds(250),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            // Animate the blur radius to 0 to fade out the blur effect
+            blurEffect.BeginAnimation(BlurEffect.RadiusProperty, fadeOutBlurAnimation);
+
+            // Wait for the fade out of the blur effect to complete
+            await Task.Delay(500); // Match the duration of the fade out animation
+
+            // Remove the blur effect after fading out
+            MainWindowGrid.Effect = null; // Remove the blur effect
+
+            // Now you can initialize the rest of the application
+            InitializeUI(); // Call a separate method to initialize other components
+        }
+
+        private void InitializeUI()
+        {
+            // Now you can proceed with the rest of your initialization
+           
+
+            
+            this.ResizeMode = ResizeMode.CanResizeWithGrip;
+            InitializeCheckboxStates();
+          
             // Attach event handlers
             this.Closing += MainWindow_Closing;
             this.Deactivated += MainWindow_Deactivated;
             this.Activated += MainWindow_Activated;
             this.SizeChanged += Window_SizeChanged;
         }
-
         public void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (this.WindowState == WindowState.Maximized)

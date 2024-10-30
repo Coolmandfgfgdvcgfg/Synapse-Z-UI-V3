@@ -12,24 +12,27 @@ namespace SynZAPI
     public class Functions
     {
         public string GetLoader()
+        {
+            // Get the current directory and then find the parent directory
+            string currentDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            string parentDirectory = Directory.GetParent(currentDirectory).FullName; // Get the parent directory
+            string currentExeName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
+            string[] exePaths = Directory.GetFiles(parentDirectory, "*.exe", SearchOption.TopDirectoryOnly); // Search in the parent directory
+
+            // Find the first executable that isn't the current one and contains the required patterns
+            foreach (var exePath in exePaths)
             {
-                string currentDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-                string currentExeName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
-                string[] exePaths = Directory.GetFiles(currentDirectory, "*.exe", SearchOption.TopDirectoryOnly);
-
-                // Find the first executable that isn't the current one and contains the required patterns
-                foreach (var exePath in exePaths)
+                if (!exePath.EndsWith(currentExeName, StringComparison.OrdinalIgnoreCase) && ContainsRequiredPatterns(exePath))
                 {
-                    if (!exePath.EndsWith(currentExeName, StringComparison.OrdinalIgnoreCase) && ContainsRequiredPatterns(exePath))
-                    {
-                        return exePath;
-                    }
+                    return exePath;
                 }
-
-                return null;
             }
 
-            private bool ContainsRequiredPatterns(string filePath)
+            return null; // Return null if no valid executable is found
+        }
+
+
+        private bool ContainsRequiredPatterns(string filePath)
             {
                 byte[] fileContent = File.ReadAllBytes(filePath);
                 string fileText = System.Text.Encoding.ASCII.GetString(fileContent);

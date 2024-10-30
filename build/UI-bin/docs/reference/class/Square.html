@@ -1,0 +1,240 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    
+<!-- Mirrored from synllc.github.io/synapse-x-documentation/reference/class/Square.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Oct 2023 21:17:40 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Square - Synapse X V3 Documentation</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Complete documentation and information on the Synapse X execution engine.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../book.css">
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../index.html";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Developer Guide</li><li class="chapter-item expanded "><a href="../../development/dev_introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../development/syn_environment.html"><strong aria-hidden="true">1.1.</strong> Synapse X Environment</a></li><li class="chapter-item expanded "><a href="../../development/supervisor_programming.html"><strong aria-hidden="true">1.2.</strong> Supervisor Based Programming</a></li><li class="chapter-item expanded "><a href="../../development/syn_security.html"><strong aria-hidden="true">1.3.</strong> Synapse X Security Model</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">API Reference</li><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">2.</strong> API Categories</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../category/environment.html"><strong aria-hidden="true">2.1.</strong> Environment</a></li><li class="chapter-item expanded "><a href="../category/filesystem.html"><strong aria-hidden="true">2.2.</strong> Filesystem</a></li><li class="chapter-item expanded "><a href="../category/hooking.html"><strong aria-hidden="true">2.3.</strong> Hooking</a></li><li class="chapter-item expanded "><a href="../category/filter.html"><strong aria-hidden="true">2.4.</strong> Filter</a></li><li class="chapter-item expanded "><a href="../category/input.html"><strong aria-hidden="true">2.5.</strong> Input</a></li><li class="chapter-item expanded "><a href="../category/misc.html"><strong aria-hidden="true">2.6.</strong> Miscellaneous</a></li><li class="chapter-item expanded "><a href="../category/network.html"><strong aria-hidden="true">2.7.</strong> Network</a></li><li class="chapter-item expanded "><a href="../category/reflection.html"><strong aria-hidden="true">2.8.</strong> Reflection</a></li><li class="chapter-item expanded "><a href="../category/script.html"><strong aria-hidden="true">2.9.</strong> Script</a></li><li class="chapter-item expanded "><a href="../category/signal.html"><strong aria-hidden="true">2.10.</strong> Signal</a></li><li class="chapter-item expanded "><a href="../category/table.html"><strong aria-hidden="true">2.11.</strong> Table</a></li><li class="chapter-item expanded "><a href="../category/websocket.html"><strong aria-hidden="true">2.12.</strong> WebSocket</a></li><li class="chapter-item expanded "><a href="../category/drawing_legacy.html"><strong aria-hidden="true">2.13.</strong> Drawing (Legacy)</a></li><li class="chapter-item expanded "><a href="../category/drawing.html"><strong aria-hidden="true">2.14.</strong> Drawing</a></li><li class="chapter-item expanded "><a href="../category/console.html"><strong aria-hidden="true">2.15.</strong> Console</a></li><li class="chapter-item expanded "><a href="../category/http.html"><strong aria-hidden="true">2.16.</strong> Web</a></li><li class="chapter-item expanded "><a href="../category/math.html"><strong aria-hidden="true">2.17.</strong> Math</a></li><li class="chapter-item expanded "><a href="../category/regex.html"><strong aria-hidden="true">2.18.</strong> Regex</a></li><li class="chapter-item expanded "><a href="../category/timer.html"><strong aria-hidden="true">2.19.</strong> Timer</a></li><li class="chapter-item expanded "><a href="../category/parallel.html"><strong aria-hidden="true">2.20.</strong> Parallel</a></li></ol></li><li class="chapter-item expanded "><a href="../namespace/index.html"><strong aria-hidden="true">3.</strong> Namespace Index</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../namespace/bit.html"><strong aria-hidden="true">3.1.</strong> bit</a></li><li class="chapter-item expanded "><a href="../namespace/syn.html"><strong aria-hidden="true">3.2.</strong> syn</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../namespace/syn.crypt.html"><strong aria-hidden="true">3.2.1.</strong> syn.crypt</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../namespace/syn.crypt.base64.html"><strong aria-hidden="true">3.2.1.1.</strong> syn.crypt.base64</a></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.hex.html"><strong aria-hidden="true">3.2.1.2.</strong> syn.crypt.hex</a></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.lz4.html"><strong aria-hidden="true">3.2.1.3.</strong> syn.crypt.lz4</a></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.derive.html"><strong aria-hidden="true">3.2.1.4.</strong> syn.crypt.derive</a></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.user.html"><strong aria-hidden="true">3.2.1.5.</strong> syn.crypt.user</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../namespace/syn.crypt.user.prompt.html"><strong aria-hidden="true">3.2.1.5.1.</strong> syn.crypt.user.prompt</a></li></ol></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.seal.html"><strong aria-hidden="true">3.2.1.6.</strong> syn.crypt.seal</a></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.sign.html"><strong aria-hidden="true">3.2.1.7.</strong> syn.crypt.sign</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../namespace/syn.crypt.sign.detached.html"><strong aria-hidden="true">3.2.1.7.1.</strong> syn.crypt.sign.detached</a></li></ol></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.custom.html"><strong aria-hidden="true">3.2.1.8.</strong> syn.crypt.custom</a></li><li class="chapter-item expanded "><a href="../namespace/syn.crypt.url.html"><strong aria-hidden="true">3.2.1.9.</strong> syn.crypt.url</a></li></ol></li><li class="chapter-item expanded "><a href="../namespace/syn.oth.html"><strong aria-hidden="true">3.2.2.</strong> syn.oth</a></li></ol></li><li class="chapter-item expanded "><a href="../namespace/debug.html"><strong aria-hidden="true">3.3.</strong> debug</a></li><li class="chapter-item expanded "><a href="../namespace/Drawing.html"><strong aria-hidden="true">3.4.</strong> Drawing</a></li><li class="chapter-item expanded "><a href="../namespace/DrawingImmediate.html"><strong aria-hidden="true">3.5.</strong> DrawingImmediate</a></li></ol></li><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">4.</strong> Class Index</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="DrawFont.html"><strong aria-hidden="true">4.1.</strong> DrawFont</a></li><li class="chapter-item expanded "><a href="Drawing.html"><strong aria-hidden="true">4.2.</strong> Drawing</a></li><li class="chapter-item expanded "><a href="DrawEntry.html"><strong aria-hidden="true">4.3.</strong> DrawEntry</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Line.html"><strong aria-hidden="true">4.3.1.</strong> Line</a></li><li class="chapter-item expanded "><a href="Text.html"><strong aria-hidden="true">4.3.2.</strong> Text</a></li><li class="chapter-item expanded "><a href="Image.html"><strong aria-hidden="true">4.3.3.</strong> Image</a></li><li class="chapter-item expanded "><a href="Circle.html"><strong aria-hidden="true">4.3.4.</strong> Circle</a></li><li class="chapter-item expanded "><a href="Square.html" class="active"><strong aria-hidden="true">4.3.5.</strong> Square</a></li><li class="chapter-item expanded "><a href="Triangle.html"><strong aria-hidden="true">4.3.6.</strong> Triangle</a></li><li class="chapter-item expanded "><a href="Quad.html"><strong aria-hidden="true">4.3.7.</strong> Quad</a></li></ol></li><li class="chapter-item expanded "><a href="Point.html"><strong aria-hidden="true">4.4.</strong> Point</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Point2D.html"><strong aria-hidden="true">4.4.1.</strong> Point2D</a></li><li class="chapter-item expanded "><a href="Point3D.html"><strong aria-hidden="true">4.4.2.</strong> Point3D</a></li><li class="chapter-item expanded "><a href="PointInstance.html"><strong aria-hidden="true">4.4.3.</strong> PointInstance</a></li><li class="chapter-item expanded "><a href="PointMouse.html"><strong aria-hidden="true">4.4.4.</strong> PointMouse</a></li><li class="chapter-item expanded "><a href="PointOffset.html"><strong aria-hidden="true">4.4.5.</strong> PointOffset</a></li></ol></li><li class="chapter-item expanded "><a href="DrawEntryDynamic.html"><strong aria-hidden="true">4.5.</strong> DrawEntryDynamic</a></li><li class="chapter-item expanded "><a href="LineDynamic.html"><strong aria-hidden="true">4.6.</strong> LineDynamic</a></li><li class="chapter-item expanded "><a href="PolyLineDynamic.html"><strong aria-hidden="true">4.7.</strong> PolyLineDynamic</a></li><li class="chapter-item expanded "><a href="TextDynamic.html"><strong aria-hidden="true">4.8.</strong> TextDynamic</a></li><li class="chapter-item expanded "><a href="CircleDynamic.html"><strong aria-hidden="true">4.9.</strong> CircleDynamic</a></li><li class="chapter-item expanded "><a href="RectDynamicBase.html"><strong aria-hidden="true">4.10.</strong> RectDynamicBase</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RectDynamic.html"><strong aria-hidden="true">4.10.1.</strong> RectDynamic</a></li><li class="chapter-item expanded "><a href="GradientRectDynamic.html"><strong aria-hidden="true">4.10.2.</strong> GradientRectDynamic</a></li><li class="chapter-item expanded "><a href="ImageDynamic.html"><strong aria-hidden="true">4.10.3.</strong> ImageDynamic</a></li></ol></li><li class="chapter-item expanded "><a href="ImageRef.html"><strong aria-hidden="true">4.11.</strong> ImageRef</a></li><li class="chapter-item expanded "><a href="RenderObject.html"><strong aria-hidden="true">4.12.</strong> RenderObject</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RenderButton.html"><strong aria-hidden="true">4.12.1.</strong> RenderButton</a></li><li class="chapter-item expanded "><a href="RenderColorButton.html"><strong aria-hidden="true">4.12.2.</strong> RenderColorButton</a></li><li class="chapter-item expanded "><a href="RenderCheckBox.html"><strong aria-hidden="true">4.12.3.</strong> RenderCheckBox</a></li><li class="chapter-item expanded "><a href="RenderColorPicker.html"><strong aria-hidden="true">4.12.4.</strong> RenderColorPicker</a></li><li class="chapter-item expanded "><a href="RenderCombo.html"><strong aria-hidden="true">4.12.5.</strong> RenderCombo</a></li><li class="chapter-item expanded "><a href="RenderDrag.html"><strong aria-hidden="true">4.12.6.</strong> RenderDrag</a></li><li class="chapter-item expanded "><a href="RenderIntDrag.html"><strong aria-hidden="true">4.12.7.</strong> RenderIntDrag</a></li><li class="chapter-item expanded "><a href="RenderTextBox.html"><strong aria-hidden="true">4.12.8.</strong> RenderTextBox</a></li><li class="chapter-item expanded "><a href="RenderSeparator.html"><strong aria-hidden="true">4.12.9.</strong> RenderSeparator</a></li><li class="chapter-item expanded "><a href="RenderSlider.html"><strong aria-hidden="true">4.12.10.</strong> RenderSlider</a></li><li class="chapter-item expanded "><a href="RenderIntSlider.html"><strong aria-hidden="true">4.12.11.</strong> RenderIntSlider</a></li><li class="chapter-item expanded "><a href="RenderSelectable.html"><strong aria-hidden="true">4.12.12.</strong> RenderSelectable</a></li><li class="chapter-item expanded "><a href="RenderChildBase.html"><strong aria-hidden="true">4.12.13.</strong> RenderChildBase</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RenderTabMenu.html"><strong aria-hidden="true">4.12.13.1.</strong> RenderTabMenu</a></li><li class="chapter-item expanded "><a href="RenderCollapsable.html"><strong aria-hidden="true">4.12.13.2.</strong> RenderCollapsable</a></li><li class="chapter-item expanded "><a href="RenderChildWindow.html"><strong aria-hidden="true">4.12.13.3.</strong> RenderChildWindow</a></li><li class="chapter-item expanded "><a href="RenderSameLine.html"><strong aria-hidden="true">4.12.13.4.</strong> RenderSameLine</a></li><li class="chapter-item expanded "><a href="RenderIndent.html"><strong aria-hidden="true">4.12.13.5.</strong> RenderIndent</a></li><li class="chapter-item expanded "><a href="RenderFont.html"><strong aria-hidden="true">4.12.13.6.</strong> RenderFont</a></li><li class="chapter-item expanded "><a href="RenderPopup.html"><strong aria-hidden="true">4.12.13.7.</strong> RenderPopup</a></li><li class="chapter-item expanded "><a href="RenderDummyWindow.html"><strong aria-hidden="true">4.12.13.8.</strong> RenderDummyWindow</a></li><li class="chapter-item expanded "><a href="RenderWindow.html"><strong aria-hidden="true">4.12.13.9.</strong> RenderWindow</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="FilterBase.html"><strong aria-hidden="true">4.13.</strong> FilterBase</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="NotFilter.html"><strong aria-hidden="true">4.13.1.</strong> NotFilter</a></li><li class="chapter-item expanded "><a href="AnyFilter.html"><strong aria-hidden="true">4.13.2.</strong> AnyFilter</a></li><li class="chapter-item expanded "><a href="AllFilter.html"><strong aria-hidden="true">4.13.3.</strong> AllFilter</a></li><li class="chapter-item expanded "><a href="TypeFilter.html"><strong aria-hidden="true">4.13.4.</strong> TypeFilter</a></li><li class="chapter-item expanded "><a href="NamecallFilter.html"><strong aria-hidden="true">4.13.5.</strong> NamecallFilter</a></li><li class="chapter-item expanded "><a href="InstanceTypeFilter.html"><strong aria-hidden="true">4.13.6.</strong> InstanceTypeFilter</a></li><li class="chapter-item expanded "><a href="UserdataTypeFilter.html"><strong aria-hidden="true">4.13.7.</strong> UserdataTypeFilter</a></li><li class="chapter-item expanded "><a href="ArgumentFilter.html"><strong aria-hidden="true">4.13.8.</strong> ArgumentFilter</a></li><li class="chapter-item expanded "><a href="ArgCountFilter.html"><strong aria-hidden="true">4.13.9.</strong> ArgCountFilter</a></li><li class="chapter-item expanded "><a href="CallerFilter.html"><strong aria-hidden="true">4.13.10.</strong> CallerFilter</a></li></ol></li><li class="chapter-item expanded "><a href="SynSignal.html"><strong aria-hidden="true">4.14.</strong> SynSignal</a></li><li class="chapter-item expanded "><a href="SynConnection.html"><strong aria-hidden="true">4.15.</strong> SynConnection</a></li><li class="chapter-item expanded "><a href="ProtoProxy.html"><strong aria-hidden="true">4.16.</strong> ProtoProxy</a></li><li class="chapter-item expanded "><a href="ReadonlyTableProxy.html"><strong aria-hidden="true">4.17.</strong> ReadonlyTableProxy</a></li><li class="chapter-item expanded "><a href="LuaStateProxy.html"><strong aria-hidden="true">4.18.</strong> LuaStateProxy</a></li><li class="chapter-item expanded "><a href="Match.html"><strong aria-hidden="true">4.19.</strong> Match</a></li><li class="chapter-item expanded "><a href="Regex.html"><strong aria-hidden="true">4.20.</strong> Regex</a></li><li class="chapter-item expanded "><a href="Duration.html"><strong aria-hidden="true">4.21.</strong> Duration</a></li><li class="chapter-item expanded "><a href="Stopwatch.html"><strong aria-hidden="true">4.22.</strong> Stopwatch</a></li><li class="chapter-item expanded "><a href="Timer.html"><strong aria-hidden="true">4.23.</strong> Timer</a></li><li class="chapter-item expanded "><a href="Value.html"><strong aria-hidden="true">4.24.</strong> Value</a></li><li class="chapter-item expanded "><a href="WebsocketClient.html"><strong aria-hidden="true">4.25.</strong> WebsocketClient</a></li><li class="chapter-item expanded "><a href="DirectoryWatcher.html"><strong aria-hidden="true">4.26.</strong> DirectoryWatcher</a></li></ol></li><li class="chapter-item expanded "><a href="../enum/index.html"><strong aria-hidden="true">5.</strong> Enum Index</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Synapse X V3 Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="class-square"><a class="header" href="#class-square">Class: Square</a></h1>
+<h2 id="static-methods"><a class="header" href="#static-methods">Static Methods</a></h2>
+<hr />
+<pre><code class="language-ts">Square Square.new()
+</code></pre>
+<h2 id="properties"><a class="header" href="#properties">Properties</a></h2>
+<hr />
+<pre><code class="language-lua">number Thickness
+</code></pre>
+<p>Determines the thickness of a Square.</p>
+<pre><code class="language-lua">Vector2 Size
+</code></pre>
+<p>Determines the size of a Square.</p>
+<pre><code class="language-lua">Vector2 Position
+</code></pre>
+<p>Determines the position of a Square.</p>
+<pre><code class="language-lua">bool Filled
+</code></pre>
+<p>Determines whether a Square is filled.</p>
+<h5 id="inherited-from-drawentry"><a class="header" href="#inherited-from-drawentry">Inherited from <a href="DrawEntry.html">DrawEntry</a>:</a></h5>
+<pre><code class="language-lua">bool Visible
+</code></pre>
+<p>Determines whether a DrawEntry will be rendered.</p>
+<pre><code class="language-lua">int ZIndex
+</code></pre>
+<p>Determines the order in which a DrawEntry is rendered relative to other GUIs.</p>
+<pre><code class="language-lua">float Transparency
+</code></pre>
+<p>A V2-era misnomer and now alias for 'Opacity'. Deprecated.</p>
+<pre><code class="language-lua">float Opacity
+</code></pre>
+<p>A value between 0 and 1 that indicates the opacity of a DrawEntry, where 0 is fully transparent and 1 is fully opaque.</p>
+<pre><code class="language-lua">Color3 Color
+</code></pre>
+<p>Determines the color of a DrawEntry.</p>
+<pre><code class="language-lua">Vector3 ColorVec3 [writeonly]
+</code></pre>
+<p>Used to set <code>Color</code> via a <code>Vector3</code>. Write-only.</p>
+<h2 id="methods"><a class="header" href="#methods">Methods</a></h2>
+<hr />
+<h5 id="inherited-from-drawentry-1"><a class="header" href="#inherited-from-drawentry-1">Inherited from <a href="DrawEntry.html">DrawEntry</a>:</a></h5>
+<pre><code class="language-ts">void Square:Remove()
+</code></pre>
+<p>Disables a DrawEntry.</p>
+<pre><code class="language-ts">void Square:Destroy()
+</code></pre>
+<p>An alias for <code>Remove</code>.</p>
+<pre><code class="language-ts">void Square:MoveToFront()
+</code></pre>
+<p>Moves a DrawEntry to the front of the current ZIndex's draw list.</p>
+<pre><code class="language-ts">void Square:MoveToBack()
+</code></pre>
+<p>Moves a DrawEntry to the back of the current ZIndex's draw list.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Circle.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="Triangle.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Circle.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="Triangle.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+
+<!-- Mirrored from synllc.github.io/synapse-x-documentation/reference/class/Square.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Oct 2023 21:17:40 GMT -->
+</html>

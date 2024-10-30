@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SynBootstrapper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="358" Width="594"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" Topmost="True"
+        Loaded="Window_Loaded">
 
+    <Grid AutomationProperties.IsOffscreenBehavior="Onscreen" Background="#FF131313">
+        <Image x:Name="SynLogo" HorizontalAlignment="Center" Height="154" Margin="0,81,0,0" VerticalAlignment="Top" Width="422" Source="/Images/synlogoupscaled.png" Stretch="UniformToFill"/>
+        <Grid Margin="0,327,0,0" Background="#FF0A0A0A">
+            <Label x:Name="CR" Content="Copyright © 2024 SammyC. MIT License. All rights reserved." HorizontalAlignment="Left" Margin="259,0,0,0" VerticalAlignment="Center" Height="31" Width="335" Foreground="#FFAFAFAF" FontFamily="Yu Gothic UI"/>
+        </Grid>
+        <ProgressBar x:Name="Progress" HorizontalAlignment="Center" Height="35" Margin="0,292,0,0" VerticalAlignment="Top" Width="594" Foreground="#FFB2DEEC" Background="Transparent" BorderBrush="Transparent"/>
+        <Label x:Name="StatusLabel" Content="" HorizontalAlignment="Center" Margin="0,296,0,0" VerticalAlignment="Top" Foreground="#FFAFAFAF" FontFamily="Yu Gothic UI"/>
     </Grid>
 </Window>
