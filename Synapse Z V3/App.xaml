@@ -21,7 +21,87 @@
             </Setter>
         </Style>
 
+        <!-- TabControl Style -->
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="#FF888888"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
 
+        <!-- Close Button Style -->
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock Text="×" FontSize="14" Foreground="White"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- TabItem Style with Rounding, Size, Image Icon, Brighter Selected Tab -->
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid>
+                            <Border x:Name="TabBorder" 
+                                    Background="#FF333333"
+                                    CornerRadius="10"
+                                    Padding="10,5" 
+                                    Margin="2"
+                                    BorderBrush="Transparent" 
+                                    BorderThickness="1">
+                                <DockPanel LastChildFill="True">
+                                    <!-- Image Icon Left of Text -->
+                                    <Image Source="Images/ast.png" 
+                                           Width="10" Height="10" 
+                                           Margin="0,0,5,0" 
+                                           VerticalAlignment="Center" UseLayoutRounding="True" SnapsToDevicePixels="True"/>
+
+                                    <!-- Tab Header Text -->
+                                    <ContentPresenter x:Name="ContentSite" 
+                                                      VerticalAlignment="Center" 
+                                                      ContentSource="Header"
+                                                      TextElement.Foreground="White"/>
+
+                                    <!-- Close Button -->
+                                    <Button Content="×" 
+                                            Width="20" 
+                                            Height="20"
+                                    
+                                            Style="{StaticResource CloseButtonStyle}" 
+                                            VerticalAlignment="Center" 
+                                            HorizontalAlignment="Right" 
+                                            Margin="5,0,0,0"
+                                            Background="#FF333333"
+                                            BorderBrush="Transparent"/>
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Trigger to Highlight Selected Tab -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#FF555555"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!-- White Text, Rounded Tabs -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="MinWidth" Value="100"/>
+        </Style>
+
+      
+        <!-- Close Button Style to Blend with Tab Background -->
+      
 
         <Style x:Key="TabToggleButtonStyle2" TargetType="ToggleButton">
             <Setter Property="Background" Value="Transparent" />
@@ -76,6 +156,50 @@
         </Style>
 
 
+        <Style x:Key="PlusButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="114"/>
+            <Setter Property="Height" Value="31"/>
+            <Setter Property="Background" Value="#FF2B2B2B"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="0.25"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Yu Gothic UI"/>
+            <Setter Property="Foreground" Value="#FF9D9D9D"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <!-- Ensure rounded corners -->
+                            <Grid>
+                                <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"/>
+                                <Border x:Name="HoverVisual" 
+                                        CornerRadius="5"  
+                                    Background="#FF2B2B2B"
+                                        Opacity="0.3" 
+                                        Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Collapsed"/>
+
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Collapsed"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
 
 
         <Style x:Key="TabButtonStyle" TargetType="Button">

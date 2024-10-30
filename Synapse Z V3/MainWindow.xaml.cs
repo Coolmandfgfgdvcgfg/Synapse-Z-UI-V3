@@ -20,6 +20,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Media.Effects;
+using Microsoft.Web.WebView2.Wpf; // Ensure this is included
+
 
 namespace Synapse_Z_V3
 {
@@ -44,11 +46,94 @@ namespace Synapse_Z_V3
         }
 
 
+
+        private List<WebView2> webViewList = new List<WebView2>();
+
+        private async void AddTabButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the TabControl's resources
+            var tabControlStyle = tabControl.Resources["NormalTabItemStyle"] as Style;
+
+            // Create a new TabItem
+            var newTab = new TabItem
+            {
+                Header = "New Tab",
+                Style = tabControlStyle // Apply the style with close button
+            };
+            System.Diagnostics.Debug.WriteLine("sigma.");
+            // Create a new WebView2 control
+            var webView = new WebView2();
+
+            // Initialize the WebView2 and load the local HTML file
+            InitializeWebView(webView);
+            System.Diagnostics.Debug.WriteLine("sigma2");
+            // Set the WebView2 as the content of the new tab
+            newTab.Content = webView;
+            System.Diagnostics.Debug.WriteLine("sigma3");
+            // Add the new WebView2 to the list
+            webViewList.Add(webView);
+            System.Diagnostics.Debug.WriteLine("sigma4");
+            // Add the new tab before the "+" button (second-to-last item in TabControl)
+            tabControl.Items.Insert(tabControl.Items.Count - 1, newTab);
+
+            // Select the newly added tab
+            tabControl.SelectedItem = newTab;
+        }
+
+        private void CloseTabButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Find the TabItem that contains the close button
+            Button closeButton = sender as Button;
+            TabItem tabItem = closeButton?.TemplatedParent as TabItem;
+
+            // Remove the tab
+            if (tabItem != null)
+            {
+                // Find the corresponding WebView2 instance
+                var webViewToRemove = tabItem.Content as WebView2;
+
+                if (webViewToRemove != null)
+                {
+                    // Remove the WebView2 instance from the list
+                    webViewList.Remove(webViewToRemove);
+                }
+
+                // Remove the tab from the TabControl
+                tabControl.Items.Remove(tabItem);
+            }
+        }
+        private async Task InitializeWebView(WebView2 webView)
+        {
+            await webView.EnsureCoreWebView2Async(null);
+
+            // Load the local HTML file
+            string htmlFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "editor.html");
+            webView.Source = new Uri(htmlFilePath);
+
+            // Wait for the document to load
+            webView.NavigationCompleted += async (sender, args) =>
+            {
+                if (args.IsSuccess)
+                {
+                    // Call the SetTheme function with "studio" as an argument
+                    string newprint = "print(\"Hello Sigma\")";
+                    string minimapScript = GlobalSettings.Minimap ? "switchMinimap(true);" : "switchMinimap(false);";
+                    string script = $"SetTheme('studio'); SetText('{newprint}');";
+
+                    // Combine both scripts into one execution command
+                    string combinedScript = $"{minimapScript} {script}";
+                    await webView.CoreWebView2.ExecuteScriptAsync(combinedScript);
+                }
+            };
+        }
+
+
+
         private async void AnimateSplashScreen()
         {
             // Initial delay to display the splash screen for 1 second
             await Task.Delay(1000);
-            InitializeWebView();
+            
             // Create a BlurEffect and set its initial radius
             BlurEffect blurEffect = new BlurEffect
             {
@@ -235,30 +320,6 @@ namespace Synapse_Z_V3
         }
 
 
-        private async void InitializeWebView()
-        {
-            await TemporyWebview.EnsureCoreWebView2Async(null);
-
-            // Load the local HTML file
-            string htmlFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "editor.html");
-            TemporyWebview.Source = new Uri(htmlFilePath);
-
-            // Wait for the document to load
-            TemporyWebview.NavigationCompleted += async (sender, args) =>
-            {
-                if (args.IsSuccess)
-                {
-                    // Call the SetTheme function with "studio" as an argument
-                    string newprint = "print(\"Hello Sigma\")";
-                    string minimapScript = GlobalSettings.Minimap ? "switchMinimap(true);" : "switchMinimap(false);";
-                    string script = $"SetTheme('studio'); SetText('{newprint}');";
-
-                    // Combine both scripts into one execution command
-                    string combinedScript = $"{minimapScript} {script}";
-                    await TemporyWebview.CoreWebView2.ExecuteScriptAsync(combinedScript);
-                }
-            };
-        }
 
 
 
@@ -671,7 +732,7 @@ namespace Synapse_Z_V3
                     break;
 
                 default:
-                    Console.WriteLine("Unknown checkbox.");
+                    System.Diagnostics.Debug.WriteLine("Unknown checkbox.");
                     break;
             }
         }
@@ -687,16 +748,18 @@ namespace Synapse_Z_V3
             await HandleCheckboxLogic(checkBox, checkBox.IsChecked);
         }
 
-        // Helper method to execute script with null check
         private async Task ExecuteJsScriptAsync(string script)
         {
-            if (TemporyWebview.CoreWebView2 != null)
+            foreach (var webView in webViewList)
             {
-                await TemporyWebview.CoreWebView2.ExecuteScriptAsync(script);
-            }
-            else
-            {
-                Console.WriteLine("CoreWebView2 is not initialized.");
+                if (webView.CoreWebView2 != null)
+                {
+                    await webView.CoreWebView2.ExecuteScriptAsync(script);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("CoreWebView2 is not initialized for one of the WebView2 instances.");
+                }
             }
         }
 

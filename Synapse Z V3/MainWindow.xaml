@@ -104,7 +104,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid x:Name="EditorPage" Grid.Row="1" Margin="0,5,0,0" Visibility="Collapsed">
+            <Grid x:Name="EditorPage" Grid.Row="1" Margin="0,5,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="174*"/>
                     <ColumnDefinition Width="478*"/>
@@ -116,15 +116,178 @@
                 </Grid.ColumnDefinitions>
 
 
-                <!-- Content goes here -->
                 <Grid Grid.ColumnSpan="4" Margin="0,0,3,39" Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Wpf:WebView2 x:Name="TemporyWebview" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,140,0"/>
+                    <!-- TabControl with Scrolling Tabs -->
+                    <TabControl x:Name="tabControl" Margin="0,0,143,0" Padding="0"
+                    Background="Transparent" 
+                    TabStripPlacement="Top">
+                        <!-- Custom Style for TabControl to Enable Scrolling -->
+                        <TabControl.Template>
+                            <ControlTemplate TargetType="TabControl">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Tab Header Panel with ScrollViewer -->
+                                    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" 
+                                      CanContentScroll="True">
+                                        <TabPanel x:Name="HeaderPanel"
+                                      IsItemsHost="True"
+                                      Panel.ZIndex="1"
+                                      Background="Transparent"
+                                      HorizontalAlignment="Left">
+                                        </TabPanel>
+                                    </ScrollViewer>
+
+                                    <!-- Wrapping the ContentPresenter in a Border to set background -->
+                                    <Border Grid.Row="1" Background="Transparent">
+                                        <ContentPresenter 
+                                ContentSource="SelectedContent" 
+                                Margin="0"/>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </TabControl.Template>
+
+                        <TabControl.Resources>
+                            <!-- TabItem Style for Regular Tabs -->
+                            <Style TargetType="TabItem" x:Key="NormalTabItemStyle">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TabItem">
+                                            <Grid>
+                                                <Border x:Name="TabBorder" 
+                            Background="#252525"
+                            CornerRadius="10"
+                            Padding="10,5"
+                            Margin="2"
+                            BorderBrush="Transparent"
+                            BorderThickness="1">
+                                                    <DockPanel LastChildFill="True">
+                                                        <!-- Icon Image Left of Text -->
+                                                        <Image Source="Images/ast.png" 
+                                   Width="8" Height="8" 
+                                   Margin="0,0,5,0" 
+                                   VerticalAlignment="Center"/>
+
+                                                        <!-- Tab Header Text -->
+                                                        <ContentPresenter x:Name="ContentSite" 
+                                              VerticalAlignment="Center" 
+                                              ContentSource="Header"
+                                              TextElement.Foreground="#FF9D9D9D"/>
+
+                                                        <!-- Close Button -->
+                                                        <Button Content="X" 
+                                    Width="15" 
+                                    Height="20"
+                                    Click="CloseTabButton_Click"
+                                    Style="{StaticResource CloseButtonStyle}" 
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Right" 
+                                    Margin="5,0,0,0"
+                                    Background="#FF333333"
+                                    BorderBrush="Transparent" 
+                                    Foreground="#FF9D9D9D" 
+                                    FontSize="20"/>
+                                                    </DockPanel>
+                                                </Border>
+                                            </Grid>
+
+                                            <!-- Visual States for Hover and Selection -->
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="TabBorder" Property="Background" Value="#FF555555"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation 
+                                        Storyboard.TargetName="TabBorder" 
+                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                        To="#FF444444" 
+                                        Duration="0:0:0.2" 
+                                        FillBehavior="HoldEnd"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation 
+                                        Storyboard.TargetName="TabBorder" 
+                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                        To="#252525" 
+                                        Duration="0:0:0.2" 
+                                        FillBehavior="HoldEnd"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+
+
+
+                            <Style TargetType="TabItem" x:Key="AddTabItemStyle">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TabItem">
+                                            <Grid>
+                                                <Border x:Name="AddTabBorder" 
+                                Background="Transparent"
+                                Padding="10,5"
+                                Margin="2"
+                                BorderBrush="Transparent"
+                                BorderThickness="1" Cursor="Hand">
+                                                    <!-- Just the "+" Button without the Close Button -->
+                                                    <Button Style="{StaticResource PlusButtonStyle}" Content="+" 
+                                    Click="AddTabButton_Click" 
+                                    Width="40" 
+                                    Height="40" 
+                                    FontSize="24"
+                                    Background="Transparent" 
+                                    Foreground="#FF9D9D9D" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" 
+                                    BorderBrush="Transparent" 
+                                    FontFamily="Yu Gothic UI" 
+                                    Margin="0,-3,0,0"/>
+                                                </Border>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TabControl.Resources>
+
+                        <!-- "+" TabItem with Click Event -->
+                        <TabItem Header="+" Style="{StaticResource AddTabItemStyle}" 
+             x:Name="AddTabItem" 
+             BorderBrush="Transparent" 
+             Foreground="Transparent" 
+             Width="39" Height="38">
+                            <TabItem.Background>
+                                <LinearGradientBrush EndPoint="0,1">
+                                    <GradientStop Color="#FFF0F0F0"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TabItem.Background>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
+
+
+
                 <Grid x:Name="ButtonTray" Margin="0,305,46,0" Grid.ColumnSpan="4" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="39" HorizontalAlignment="Left" Margin="69,0,0,0" Width="575">
                         <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
@@ -266,7 +429,7 @@
                 </Grid>
 
             </Grid>
-            <Grid x:Name="SettingsPage" Grid.Row="1" Margin="0,5,0,0" Visibility="Visible">
+            <Grid x:Name="SettingsPage" Grid.Row="1" Margin="0,5,0,0" Visibility="Collapsed">
                 <Label x:Name="TimeLeft" Content="You have 0 days and 0 hours left of your subscription." HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" Height="24" Margin="0,320,0,0"/>
                 <Grid x:Name="SectionContainer" Background="#FF252525" Panel.ZIndex="2" HorizontalAlignment="Left" Width="49">
                     <Grid.Effect>
@@ -367,8 +530,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-            <Image HorizontalAlignment="Center" Height="100" Margin="0,138,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
-            <Image HorizontalAlignment="Left" Height="100" Margin="296,121,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
+            
         </Grid>
     </Border>
 </Window>

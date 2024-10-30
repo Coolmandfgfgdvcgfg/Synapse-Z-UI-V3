@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <None Remove="Images\andrew_tate_emotional_speech.mov" />
+    <None Remove="Images\ast.png" />
     <None Remove="Images\bookico.png" />
     <None Remove="Images\bookmark.png" />
     <None Remove="Images\bracketico.png" />
@@ -54,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\ast.png" />
     <Resource Include="Images\chip.png" />
   </ItemGroup>
 
