@@ -99,9 +99,9 @@
             <Setter Property="MinWidth" Value="100"/>
         </Style>
 
-      
+
         <!-- Close Button Style to Blend with Tab Background -->
-      
+
 
         <Style x:Key="TabToggleButtonStyle2" TargetType="ToggleButton">
             <Setter Property="Background" Value="Transparent" />
@@ -157,8 +157,8 @@
 
 
         <Style x:Key="PlusButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="114"/>
-            <Setter Property="Height" Value="31"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
             <Setter Property="Background" Value="#FF2B2B2B"/>
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="0.25"/>
@@ -168,33 +168,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="5">
-                            <!-- Ensure rounded corners -->
-                            <Grid>
-                                <ContentPresenter 
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center"/>
-                                <Border x:Name="HoverVisual" 
-                                        CornerRadius="5"  
-                                    Background="#FF2B2B2B"
-                                        Opacity="0.3" 
-                                        Visibility="Collapsed"/>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Collapsed"/>
 
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="False">
-                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Collapsed"/>
 
-                            </Trigger>
-
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

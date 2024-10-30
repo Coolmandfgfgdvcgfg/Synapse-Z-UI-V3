@@ -4,6 +4,61 @@
              xmlns:local="clr-namespace:SynBootstrapper"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Updated MainButtonStyle with rounded corners -->
+        <Style x:Key="MainButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="114"/>
+            <Setter Property="Height" Value="31"/>
+            <Setter Property="Background" Value="#FF2B2B2B"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="0.25"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Yu Gothic UI"/>
+            <Setter Property="Foreground" Value="#FF9D9D9D"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <!-- Ensure rounded corners -->
+                            <Grid>
+                                <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"/>
+                                <Border x:Name="HoverVisual" 
+                                        CornerRadius="5"  
+                                    Background="#FF2B2B2B"
+                                        Opacity="0.3" 
+                                        Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Visible"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter TargetName="HoverVisual" Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="0.5"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="HoverVisual" Property="Background" Value="LightGray"/>
+                                <Setter TargetName="HoverVisual" Property="Opacity" Value="0.5"/>
+                                <Setter Property="BorderBrush" Value="#3b3b3a"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="False">
+                                <Setter TargetName="HoverVisual" Property="Background" Value="Gray"/>
+                                <Setter TargetName="HoverVisual" Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
     </Application.Resources>
 </Application>

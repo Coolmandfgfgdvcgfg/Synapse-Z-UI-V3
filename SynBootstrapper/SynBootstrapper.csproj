@@ -13,6 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\key.png" />
+    <None Remove="Images\padlock.png" />
     <None Remove="Images\synlogoupscaled.png" />
   </ItemGroup>
 
@@ -21,6 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\key.png" />
+    <Resource Include="Images\padlock.png" />
     <Resource Include="Images\synlogoupscaled.png" />
   </ItemGroup>
 

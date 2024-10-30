@@ -1,6 +1,7 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:custom="clr-namespace:Synapse_Z_V3"
         xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="Synapse_Z_V3.MainWindow"
         Title="MainWindow" 
         Height="380" 
@@ -30,7 +31,7 @@
             <Grid x:Name="SplashScreen"  Background="#252525" Panel.ZIndex="100" Grid.RowSpan="2" Visibility="Collapsed">
                 <Label x:Name="Flag" Margin="0,322,0,0" Content="" Panel.ZIndex="101" FontSize="30" HorizontalAlignment="Left" Width="100" VerticalAlignment="Bottom" />
                 <Border ClipToBounds="True">
-                    <Image Source="Images/synbackdrop.jpg" Stretch="UniformToFill" Margin="0,-51,0,-48" />
+                    <custom:MultiSizeImage Source="Images/synbackdrop.jpg" Stretch="UniformToFill" Margin="0,-51,0,-48" />
                 </Border>
 
 
@@ -70,7 +71,7 @@
 
             <!-- Title Bar for Dragging -->
             <Grid Background="#252525" MouseDown="TitleBar_MouseDown" Panel.ZIndex="4" Margin="0,0,0,344" Grid.RowSpan="2" VerticalAlignment="Top">
-                <Image Source="Images/synlogowhite.png" 
+                <custom:MultiSizeImage Source="Images/synlogowhite.png" 
                        Width="138" Height="41"
                        HorizontalAlignment="Left" Margin="4,-3,0,0" VerticalAlignment="Top"/>
                 <TextBlock VerticalAlignment="Top" Margin="118,6,429,0" Foreground="White" FontWeight="Bold" Height="26" FontSize="9" FontFamily="Calibri"><Run Text="Z UI "/><LineBreak/><Run Text="V2.0.0"/></TextBlock>
@@ -78,11 +79,11 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,-1,0,1">
                         <Button Style="{StaticResource TabButtonStyle}" x:Name="Button1" Width="20" Height="20" Background="Transparent" 
                                 BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Margin="0,0,8,0" Cursor="Hand">
-                            <Image Source="Images/bracketico.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
+                            <custom:MultiSizeImage Source="Images/bracketico.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
                         </Button>
                         <Button Style="{StaticResource TabButtonStyle}" x:Name="Button2" Width="20" Height="20" 
                                 BorderBrush="Transparent" Click="Button_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Background="#00000000" Cursor="Hand">
-                            <Image Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
+                            <custom:MultiSizeImage Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Stretch="Uniform"/>
                         </Button>
                     </StackPanel>
                     <Rectangle x:Name="Underline" Fill="White" Height="2" Width="20" 
@@ -116,13 +117,13 @@
                 </Grid.ColumnDefinitions>
 
 
-                <Grid Grid.ColumnSpan="4" Margin="0,0,3,39" Background="Transparent">
+                <Grid Grid.ColumnSpan="4" Margin="0,0,3,39" Panel.ZIndex="1" Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <!-- TabControl with Scrolling Tabs -->
-                    <TabControl x:Name="tabControl" Margin="0,0,143,0" Padding="0"
+                    <TabControl SelectionChanged="MainTabControl_SelectionChanged" x:Name="tabControl"  Margin="0,0,143,0" Padding="0"
                     Background="Transparent" 
                     TabStripPlacement="Top">
                         <!-- Custom Style for TabControl to Enable Scrolling -->
@@ -156,7 +157,6 @@
                         </TabControl.Template>
 
                         <TabControl.Resources>
-                            <!-- TabItem Style for Regular Tabs -->
                             <Style TargetType="TabItem" x:Key="NormalTabItemStyle">
                                 <Setter Property="Template">
                                     <Setter.Value>
@@ -171,10 +171,10 @@
                             BorderThickness="1">
                                                     <DockPanel LastChildFill="True">
                                                         <!-- Icon Image Left of Text -->
-                                                        <Image Source="Images/ast.png" 
-                                   Width="8" Height="8" 
-                                   Margin="0,0,5,0" 
-                                   VerticalAlignment="Center"/>
+                                                        <custom:MultiSizeImage Source="Images/ast.png" 
+                                                   Width="8" Height="8" 
+                                                   Margin="0,0,5,0" 
+                                                   VerticalAlignment="Center"/>
 
                                                         <!-- Tab Header Text -->
                                                         <ContentPresenter x:Name="ContentSite" 
@@ -183,14 +183,14 @@
                                               TextElement.Foreground="#FF9D9D9D"/>
 
                                                         <!-- Close Button -->
-                                                        <Button Content="X" 
-                                    Width="15" 
+                                                        <Button Content="x" 
+                                    Width="10" 
                                     Height="20"
                                     Click="CloseTabButton_Click"
                                     Style="{StaticResource CloseButtonStyle}" 
                                     VerticalAlignment="Center" 
                                     HorizontalAlignment="Right" 
-                                    Margin="5,0,0,0"
+                                    Margin="0,0,0,0"
                                     Background="#FF333333"
                                     BorderBrush="Transparent" 
                                     Foreground="#FF9D9D9D" 
@@ -201,34 +201,14 @@
 
                                             <!-- Visual States for Hover and Selection -->
                                             <ControlTemplate.Triggers>
+                                                <!-- Selected State - Solid Gray -->
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter TargetName="TabBorder" Property="Background" Value="#FF555555"/>
                                                 </Trigger>
+
+                                                <!-- Hover State - Only when not selected -->
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation 
-                                        Storyboard.TargetName="TabBorder" 
-                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
-                                        To="#FF444444" 
-                                        Duration="0:0:0.2" 
-                                        FillBehavior="HoldEnd"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation 
-                                        Storyboard.TargetName="TabBorder" 
-                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
-                                        To="#252525" 
-                                        Duration="0:0:0.2" 
-                                        FillBehavior="HoldEnd"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.ExitActions>
+                                                    <Setter TargetName="TabBorder" Property="Background" Value="#FF444444"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -238,30 +218,55 @@
 
 
 
+
+
                             <Style TargetType="TabItem" x:Key="AddTabItemStyle">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="TabItem">
                                             <Grid>
                                                 <Border x:Name="AddTabBorder" 
-                                Background="Transparent"
-                                Padding="10,5"
-                                Margin="2"
-                                BorderBrush="Transparent"
-                                BorderThickness="1" Cursor="Hand">
-                                                    <!-- Just the "+" Button without the Close Button -->
-                                                    <Button Style="{StaticResource PlusButtonStyle}" Content="+" 
-                                    Click="AddTabButton_Click" 
-                                    Width="40" 
-                                    Height="40" 
-                                    FontSize="24"
-                                    Background="Transparent" 
-                                    Foreground="#FF9D9D9D" 
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" 
-                                    BorderBrush="Transparent" 
-                                    FontFamily="Yu Gothic UI" 
-                                    Margin="0,-3,0,0"/>
+            Background="Transparent"
+            Padding="0"
+            Margin="2"
+            BorderBrush="Transparent"
+            BorderThickness="1" 
+            Cursor="Hand">
+
+                                                    <!-- "+" Button filling entire Border with no hover effect -->
+                                                    <Button Content="+" 
+                Click="AddTabButton_Click" 
+                FontSize="24"
+                Background="Transparent" 
+                Foreground="#FF9D9D9D"
+                BorderBrush="Transparent" 
+                FontFamily="Yu Gothic UI" 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="0,-4,0,0">
+
+                                                        <!-- Style to remove hover effects -->
+                                                        <Button.Style>
+                                                            <Style TargetType="Button">
+                                                                <Setter Property="Background" Value="Transparent"/>
+                                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate TargetType="Button">
+                                                                            <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="0">
+                                                                                <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                                                            </Border>
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </Button.Style>
+                                                    </Button>
                                                 </Border>
                                             </Grid>
                                         </ControlTemplate>
@@ -292,41 +297,41 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="39" HorizontalAlignment="Left" Margin="69,0,0,0" Width="575">
                         <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/Execute.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <custom:MultiSizeImage Source="Images/Execute.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="13" Height="13" Margin="0,0,5,0" />
                                 <TextBlock Text="Execute" Height="14" />
                             </StackPanel>
                         </Button>
                         <Button x:Name="Clear" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/TrashcanSmoothed.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <custom:MultiSizeImage Source="Images/TrashcanSmoothed.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="13" Height="13" Margin="0,0,5,0" />
                                 <TextBlock Text="Clear" Height="14" />
                             </StackPanel>
                         </Button>
                         <Button x:Name="Open" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="108">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/fileback.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <custom:MultiSizeImage Source="Images/fileback.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="13" Height="13" Margin="0,0,5,0" />
                                 <TextBlock Text="Open" Height="14" />
                             </StackPanel>
                         </Button>
                         <Button x:Name="ExecuteFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/filebackexecute.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <custom:MultiSizeImage Source="Images/filebackexecute.png" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Execute File" Height="14" />
                             </StackPanel>
                         </Button>
                         <Button x:Name="SaveFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/saveic.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <custom:MultiSizeImage Source="Images/saveic.png" SnapsToDevicePixels="True"  Width="13" Height="13" Margin="0,0,5,0" />
                                 <TextBlock Text="Save File" Height="14" Foreground="#FF9D9D9D" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
                     <StackPanel  x:Name="SmallButtons" Margin="5,0,678,0" Orientation="Horizontal">
                         <Button MouseLeave="Button_MouseLeave" Click="OpenWebPageButton_Click" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Cursor="Hand">
-                            <Image Source="Images/bookico.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
+                            <custom:MultiSizeImage Source="Images/bookico.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
                         </Button>
                         <Button MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Cursor="Hand">
-                            <Image Source="Images/inject.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
+                            <custom:MultiSizeImage Source="Images/inject.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
                         </Button>
                     </StackPanel>
 
@@ -356,7 +361,7 @@
                           BorderThickness="0" 
                           Width="140">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="Images/Drive.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <custom:MultiSizeImage Source="Images/Drive.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
                                     <TextBlock Text="Local Filesystem" VerticalAlignment="Center" Margin="0,0,0,0"/>
                                     <!-- Adjusted VerticalAlignment -->
                                 </StackPanel>
@@ -384,7 +389,7 @@
                           BorderThickness="0" 
                           Width="140">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="Images/bookmark.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <custom:MultiSizeImage Source="Images/bookmark.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
                                     <TextBlock Text="Bookmarks" VerticalAlignment="Center" Margin="0,0,0,0"/>
                                     <!-- Adjusted VerticalAlignment -->
                                 </StackPanel>
@@ -414,7 +419,7 @@
                           BorderThickness="0" 
                           Width="140">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="Images/github.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <custom:MultiSizeImage Source="Images/github.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="16" Height="16" Margin="0,0,5,0"/>
                                     <TextBlock Text="Github Gists" VerticalAlignment="Center" Margin="0,0,0,0"/>
                                     <!-- Adjusted VerticalAlignment -->
                                 </StackPanel>
@@ -437,16 +442,16 @@
                     </Grid.Effect>
                     <StackPanel x:Name="IconStack" Orientation="Vertical" Margin="0">
                         <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5"  x:Name="EditorScrollButton" IsEnabled="False">
-                            <Image Source="Images/codeic.png" Margin="5" />
+                            <custom:MultiSizeImage Source="Images/codeic.png" Margin="5" />
                         </ToggleButton>
                         <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" x:Name="InjectionScrollButton" IsEnabled="False">
-                            <Image Source="Images/inject.png" Margin="5" />
+                            <custom:MultiSizeImage Source="Images/inject.png" Margin="5" />
                         </ToggleButton>
                         <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" x:Name="ConfigScrollButton" IsEnabled="False">
-                            <Image Source="Images/settingscog.png" Margin="5" />
+                            <custom:MultiSizeImage Source="Images/settingscog.png" Margin="5" />
                         </ToggleButton>
                         <ToggleButton Style="{StaticResource TabToggleButtonStyle2}" Width="35" Height="35" Margin="5" x:Name="GeneralScrollButton" IsEnabled="False">
-                            <Image Source="Images/wrench.png" Margin="5" />
+                            <custom:MultiSizeImage Source="Images/wrench.png" Margin="5" />
                         </ToggleButton>
                     </StackPanel>
 
@@ -471,16 +476,17 @@
                     <StackPanel>
                         <Border x:Name="EditorScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
                             <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
-                                <Image Source="Images/codeic.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
+                                <custom:MultiSizeImage Source="Images/codeic.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
                                 <Label Content="Editor" FontSize="18" FontFamily="Yu Gothic UI" 
                Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
                         <CheckBox x:Name="MinimapToggle" Content="Configure Minimap" Tag="Configure if the editor Minimap is off or on" 
                   Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+
                         <Border x:Name="InjectionScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
                             <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
-                                <Image Source="Images/Inject.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
+                                <custom:MultiSizeImage Source="Images/Inject.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
                                 <Label Content="Injection" FontSize="18" FontFamily="Yu Gothic UI" 
                Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
                             </StackPanel>
@@ -490,7 +496,7 @@
 
                         <Border x:Name="ConfigScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
                             <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
-                                <Image Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
+                                <custom:MultiSizeImage Source="Images/settingscog.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
                                 <Label Content="Configuration" FontSize="18" FontFamily="Yu Gothic UI" 
                Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
                             </StackPanel>
@@ -503,26 +509,61 @@
                   Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
                         <Border x:Name="GeneralScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
                             <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">
-                                <Image Source="Images/wrench.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
+                                <custom:MultiSizeImage Source="Images/wrench.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="24" Height="24" Margin="5,0" HorizontalAlignment="Left"/>
                                 <Label Content="General" FontSize="18" FontFamily="Yu Gothic UI" 
                Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
-                        <Button  x:Name="RedeemKeyButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/key.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
-                                <TextBlock Text="Redeem Key" Height="14" Foreground="#FF9D9D9D" />
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Width="628">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                                <!-- Redeem Key Button -->
+                                <Button Click="RedeemKeyClick" x:Name="RedeemKeyButton" Margin="0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="314">
+                                    <StackPanel Orientation="Horizontal">
+                                        <custom:MultiSizeImage Source="Images/key.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                        <TextBlock Text="Redeem License Key" Height="14" Foreground="#FF9D9D9D" />
+                                    </StackPanel>
+                                </Button>
+
+                                <!-- Spacer -->
+                                <Border Width="10" Background="Transparent" />
+                                <!-- This creates a space between the Button and PasswordBox -->
+
+                                <!-- Key Input Area -->
+                                <Border Background="#FF2B2B2B" CornerRadius="10" BorderBrush="#FF3A3A3A" BorderThickness="2" Margin="0" Width="300">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="10" ShadowDepth="4" Opacity="0.5" Color="Black"/>
+                                    </Border.Effect>
+
+                                    <!-- Inner Border for Rounding the PasswordBox -->
+                                    <Border CornerRadius="10" Background="#FF252525">
+                                        <Grid>
+                                            <!-- Placeholder TextBlock -->
+                                            <TextBlock x:Name="PlaceholderText" Text="Please enter your key." 
+                               Foreground="#FF808080" VerticalAlignment="Center" 
+                               Margin="10,0,0,0" FontSize="14" IsHitTestVisible="False" FontFamily="Segoe UI" />
+
+                                            <!-- PasswordBox -->
+                                            <PasswordBox x:Name="keybox" Background="Transparent" 
+                                 BorderThickness="0" Foreground="#FFAFAFAF" 
+                                 FontSize="14" Margin="10,0,0,0"
+                                 CaretBrush="#FF848484" 
+                                 PasswordChanged="Key_TextChanged" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </Border>
                             </StackPanel>
-                        </Button>
+                        </StackPanel>
+
+
                         <Button Click="UpdateAccountInfoAsync" x:Name="RefreshButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/clock.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <custom:MultiSizeImage Source="Images/clock.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Refresh Subscription Time" Height="14" Foreground="#FF9D9D9D" />
                             </StackPanel>
                         </Button>
                         <Button Click="ResetHwidClick" x:Name="ResetHWIDButton" Margin="5,0,0,5" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="628">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Images/chip.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
+                                <custom:MultiSizeImage Source="Images/chip.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Reset HWID" Height="14" Foreground="#FF9D9D9D" />
                             </StackPanel>
                         </Button>
@@ -530,7 +571,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-            
+
         </Grid>
     </Border>
 </Window>

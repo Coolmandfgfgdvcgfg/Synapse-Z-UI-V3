@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using SynZAPI;
 using Synapse_Z_V3.Settings;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Windows.Media.Effects;
-using Microsoft.Web.WebView2.Wpf; // Ensure this is included
+using Microsoft.Web.WebView2.Wpf;
 
 
 namespace Synapse_Z_V3
@@ -36,20 +29,62 @@ namespace Synapse_Z_V3
         {
             Mutex mutex = new Mutex(true, "ROBLOX_singletonMutex");
 
-          
             InitializeComponent();  // Initialize the UI components
+            string apiKey = synapseZAPI.GetAuthKey();
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                // Make the UI invisible
+                this.Visibility = System.Windows.Visibility.Hidden;  // Hide the window in WPF
+
+                // Show an error message box
+                MessageBox.Show("Authorization failed. Please make sure you launched the UI from the Bootstrapper.",
+                                "Error",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+
+                // Close the application once the message box is closed
+                this.Close();
+
+                return; // Stop further execution
+            }
+
             InitializeAsync();
             AnimateSplashScreen();  // Start the splash screen animation
             SplashScreen.Visibility = Visibility.Visible;
             EditorPage.Visibility = Visibility.Visible;
             SettingsPage.Visibility = Visibility.Collapsed;
+
+           
         }
 
-
-
         private List<WebView2> webViewList = new List<WebView2>();
+        private int _lastTabIndex = 0;
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tabControl.SelectedItem is TabItem selectedTab && selectedTab.Header?.ToString() == "+")
+            {
+                // Check if there is a previous tab index; otherwise, move to the second last tab
+                int fallbackTabIndex = Math.Max(0, tabControl.Items.Count - 2);
+
+                // Switch back to the previous tab if it exists, otherwise to the fallback tab
+                tabControl.SelectedIndex = _lastTabIndex >= fallbackTabIndex
+                    ? fallbackTabIndex
+                    : _lastTabIndex;
+
+                return;
+            }
+
+            // Update the last selected tab index if a valid tab is selected
+            _lastTabIndex = tabControl.SelectedIndex;
+        }
 
         private async void AddTabButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewTab();
+        }
+
+        private void AddNewTab()
         {
             // Get the TabControl's resources
             var tabControlStyle = tabControl.Resources["NormalTabItemStyle"] as Style;
@@ -60,25 +95,69 @@ namespace Synapse_Z_V3
                 Header = "New Tab",
                 Style = tabControlStyle // Apply the style with close button
             };
-            System.Diagnostics.Debug.WriteLine("sigma.");
+
             // Create a new WebView2 control
             var webView = new WebView2();
 
             // Initialize the WebView2 and load the local HTML file
             InitializeWebView(webView);
-            System.Diagnostics.Debug.WriteLine("sigma2");
+
             // Set the WebView2 as the content of the new tab
             newTab.Content = webView;
-            System.Diagnostics.Debug.WriteLine("sigma3");
+
             // Add the new WebView2 to the list
             webViewList.Add(webView);
-            System.Diagnostics.Debug.WriteLine("sigma4");
+
             // Add the new tab before the "+" button (second-to-last item in TabControl)
             tabControl.Items.Insert(tabControl.Items.Count - 1, newTab);
 
             // Select the newly added tab
             tabControl.SelectedItem = newTab;
+
+            // Create the animation
+            var animation = new Storyboard();
+
+            // Width animation
+            double targetWidth = 100; // Set the final width you want for the tab
+
+            var widthAnimation = new DoubleAnimation
+            {
+                From = 20, // Start width (small enough not to cut off the button)
+                To = targetWidth, // End width
+                Duration = TimeSpan.FromMilliseconds(300), // Animation duration
+                EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut } // Optional easing
+            };
+
+            // Translate transform for sliding effect
+            var translateTransform = new TranslateTransform();
+            newTab.RenderTransform = translateTransform;
+
+            var slideAnimation = new DoubleAnimation
+            {
+                From = -20, // Start slide position (off-screen left)
+                To = 0, // End slide position
+                Duration = TimeSpan.FromMilliseconds(300),
+                EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            // Set padding for the TabItem to give space for the close button
+            newTab.Padding = new Thickness(10, 0, 10, 0); // Adjust as needed
+
+            // Set the animations to the storyboard
+            Storyboard.SetTarget(widthAnimation, newTab);
+            Storyboard.SetTargetProperty(widthAnimation, new PropertyPath("Width"));
+            Storyboard.SetTarget(slideAnimation, translateTransform);
+            Storyboard.SetTargetProperty(slideAnimation, new PropertyPath("X"));
+
+            // Add animations to the storyboard
+            animation.Children.Add(widthAnimation);
+            animation.Children.Add(slideAnimation);
+
+            // Start the animation
+            animation.Begin();
         }
+
+
 
         private void CloseTabButton_Click(object sender, RoutedEventArgs e)
         {
@@ -86,22 +165,38 @@ namespace Synapse_Z_V3
             Button closeButton = sender as Button;
             TabItem tabItem = closeButton?.TemplatedParent as TabItem;
 
-            // Remove the tab
-            if (tabItem != null)
+            // Ensure the "+" tab is excluded from the closeable tabs
+            var closeableTabs = tabControl.Items.OfType<TabItem>().Where(t => t.Header?.ToString() != "+").ToList();
+
+            // Prevent closing if there's only one closeable tab left
+            if (closeableTabs.Count <= 1)
+            {
+                return;
+            }
+
+            // Remove the tab if it's valid and not the "+" tab
+            if (tabItem != null && closeableTabs.Contains(tabItem))
             {
                 // Find the corresponding WebView2 instance
                 var webViewToRemove = tabItem.Content as WebView2;
-
                 if (webViewToRemove != null)
                 {
                     // Remove the WebView2 instance from the list
                     webViewList.Remove(webViewToRemove);
                 }
 
+                // Get the index of the tab to be closed
+                int tabIndex = tabControl.Items.IndexOf(tabItem);
+
                 // Remove the tab from the TabControl
                 tabControl.Items.Remove(tabItem);
+
+                // If possible, navigate to the tab at one index before the closed tab, otherwise go to the first tab
+                int newTabIndex = tabIndex > 0 ? tabIndex - 1 : 0;
+                tabControl.SelectedIndex = newTabIndex;
             }
         }
+
         private async Task InitializeWebView(WebView2 webView)
         {
             await webView.EnsureCoreWebView2Async(null);
@@ -133,6 +228,7 @@ namespace Synapse_Z_V3
         {
             // Initial delay to display the splash screen for 1 second
             await Task.Delay(1000);
+            // Automatically add a new tab on startup
             
             // Create a BlurEffect and set its initial radius
             BlurEffect blurEffect = new BlurEffect
@@ -193,6 +289,7 @@ namespace Synapse_Z_V3
             // Animate the blur radius to 0 to fade out the blur effect
             blurEffect.BeginAnimation(BlurEffect.RadiusProperty, fadeOutBlurAnimation);
 
+            AddNewTab();
             // Wait for the fade out of the blur effect to complete
             await Task.Delay(500); // Match the duration of the fade out animation
 
@@ -201,6 +298,7 @@ namespace Synapse_Z_V3
 
             // Now you can initialize the rest of the application
             InitializeUI(); // Call a separate method to initialize other components
+           
         }
 
         private void InitializeUI()
@@ -208,10 +306,10 @@ namespace Synapse_Z_V3
             // Now you can proceed with the rest of your initialization
            
 
-            
+
             this.ResizeMode = ResizeMode.CanResizeWithGrip;
             InitializeCheckboxStates();
-          
+
             // Attach event handlers
             this.Closing += MainWindow_Closing;
             this.Deactivated += MainWindow_Deactivated;
@@ -319,8 +417,31 @@ namespace Synapse_Z_V3
             }
         }
 
+        private async void RedeemKeyClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Await the async method to get account info
+                string keyInfo = await synapseZAPI.RedeemKeyAsync(keybox.Password);
 
+                MessageBox.Show(keyInfo);
+                keybox.Password = "";
+            }
+            catch (FileNotFoundException fnfEx)
+            {
+                System.Diagnostics.Debug.WriteLine("File not found: " + fnfEx.Message);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("An error occurred: " + ex.Message);
+            }
+        }
 
+        private void Key_TextChanged(object sender, RoutedEventArgs e)
+        {
+            var keybox = sender as PasswordBox;
+            PlaceholderText.Visibility = string.IsNullOrWhiteSpace(keybox.Password) ? Visibility.Visible : Visibility.Collapsed;
+        }
 
 
         private void OpenWebPageButton_Click(object sender, RoutedEventArgs e)
@@ -728,7 +849,7 @@ namespace Synapse_Z_V3
 
                 case "AutoInjectToggle":
                     GlobalSettings.AutoInject = isChecked;
-    
+
                     break;
 
                 default:
@@ -763,9 +884,19 @@ namespace Synapse_Z_V3
             }
         }
 
-        private void ResetHwidClick(object sender, RoutedEventArgs e)
+        private async void ResetHwidClick(object sender, RoutedEventArgs e)
         {
-            synapseZAPI.ResetHWID();
+            int result = await synapseZAPI.ResetHWIDAsync(); // Await the asynchronous method
+
+            if (result == 0)
+            {
+                MessageBox.Show("HWID reset successfully.");
+            }
+            else
+            {
+                MessageBox.Show("Failed to reset HWID.");
+            }
         }
+
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -40,87 +40,180 @@ namespace SynZAPI
                 return fileText.Contains(".grh0") && fileText.Contains(".grh1") && fileText.Contains(".grh2");
             }
 
-            public async Task<string> RunLoaderAsync(string startParams)
-            {
-                string loaderPath = GetLoader();
 
-                if (loaderPath == null)
-                {
-                    throw new FileNotFoundException("No suitable loader executable found.");
-                }
-
-                using (Process process = new Process())
-                {
-                    process.EnableRaisingEvents = true;
-                    process.StartInfo.FileName = loaderPath;
-                    process.StartInfo.Arguments = startParams;
-                    process.StartInfo.UseShellExecute = false;
-                    process.StartInfo.RedirectStandardOutput = true;
-                    process.StartInfo.RedirectStandardInput = true;
-                    process.StartInfo.RedirectStandardError = true; // Capture standard error
-                    process.StartInfo.CreateNoWindow = true; // Prevent the console window from appearing
-
-                    var outputTaskCompletionSource = new TaskCompletionSource<bool>();
-                    var outputBuilder = new StringBuilder();
-
-                    process.OutputDataReceived += (sender, e) =>
-                    {
-                        if (e.Data != null)
-                        {
-                            outputBuilder.AppendLine(e.Data);
-                            outputTaskCompletionSource.TrySetResult(true);
-                        }
-                        else
-                        {
-                            // Signal that the output reading is complete
-                            outputTaskCompletionSource.TrySetResult(true);
-                        }
-                    };
-
-                    process.Start();
-                    process.BeginOutputReadLine(); 
-
-                    await process.StandardInput.WriteLineAsync(); 
-                    await outputTaskCompletionSource.Task;
-
-                    return outputBuilder.ToString();
-                }
-            }
 
         public async Task<string> GetAccountInfoAsync()
         {
-            // Get the account info string, e.g., "12 days 5 hours" or "Your license is expired"
-            string accountInfo = await RunLoaderAsync("info");
+            string apiUrl = "http://api.synapsez.net/info"; 
+            string apiKey = GetAuthKey();
 
-            // Check for expired license message
-            if (accountInfo.Equals("Your license is expired", StringComparison.OrdinalIgnoreCase))
+            using (HttpClient client = new HttpClient())
             {
-                return accountInfo; // Return the expired message directly
-            }
+                // Set custom header for the API key
+                client.DefaultRequestHeaders.Add("key", apiKey);
 
-            // Split the account info string to extract days and hours
-            var parts = accountInfo.Split(' ');
-            if (parts.Length >= 4) // Ensure we have at least "X days Y hours"
-            {
-                // Parse days and hours
-                if (int.TryParse(parts[0], out int days) && int.TryParse(parts[2], out int hours))
+                try
                 {
-                    // Convert hours to days if over 24
-                    days += hours / 24;
-                    hours = hours % 24;
+                    // Prepare an empty body with the correct content type
+                    var content = new StringContent(string.Empty, Encoding.UTF8, "application/x-www-form-urlencoded");
 
-                    // Format with commas and return the desired string
-                    return $"You have {days.ToString("N0")} days and {hours.ToString("N0")} hours left of your subscription.";
+                    // Send the POST request
+                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Log the raw response content for debugging
+                        Console.WriteLine($"Raw response content: '{responseContent}'");
+
+                        // Trim whitespace from the response content
+                        responseContent = responseContent.Trim();
+
+                        // Attempt to convert the trimmed response content to a long
+                        if (long.TryParse(responseContent, out long totalSeconds))
+                        {
+                            // Convert seconds to days and hours
+                            long days = totalSeconds / 86400; // 86400 seconds in a day
+                            long hours = (totalSeconds % 86400) / 3600; // 3600 seconds in an hour
+
+                            // Format and return the desired string
+                            return $"You have {days.ToString("N0")} days and {hours.ToString("N0")} hours left of your subscription.";
+                        }
+                        else
+                        {
+                            return "Account information is not in the expected format."; // Handle parse failure
+                        }
+                    }
+                    else
+                    {
+                        string errorContent = await response.Content.ReadAsStringAsync();
+                        return $"Error: {errorContent}"; // Return the error message
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Exception occurred: {ex.Message}"; // Return exception message
                 }
             }
-
-            // If the format is not as expected, return an error or default message
-            return "Account information is not in the expected format.";
         }
 
-        public void ResetHWID()
+        public string GetAuthKey()
         {
-            RunLoaderAsync("resethwid");
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string filePath = System.IO.Path.Combine(localAppData, "auth.syn");
+
+            try
+            {
+                // Read the content of the auth.syn file
+                if (System.IO.File.Exists(filePath))
+                {
+                    return System.IO.File.ReadAllText(filePath);
+                }
+                else
+                {
+                    return string.Empty; // Return an empty string if the file doesn't exist
+                }
+            }
+            catch (Exception ex)
+            {
+                return string.Empty; // Return an empty string on error
+            }
         }
+
+
+        public async Task<int> ResetHWIDAsync()
+        {
+            string apiUrl = "http://api.synapsez.net/resethwid";
+            string apiKey = GetAuthKey();
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Set custom header for the API key
+                client.DefaultRequestHeaders.Add("key", apiKey);
+
+                try
+                {
+                    // Prepare an empty body with the correct content type
+                    var content = new StringContent(string.Empty, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    // Send the POST request
+                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+                    
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        if (responseContent == "reset hwid successfully")
+                        {
+                            // Return 0 on success
+                            return 0;
+                        }
+                        else
+                        {
+                            return 1; 
+                        }
+                    }
+                    else
+                    {
+                        string errorContent = await response.Content.ReadAsStringAsync();
+                        return 1; // Return 1 for HTTP errors
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return 1; // Return 1 for exceptions
+                }
+            }
+        }
+
+        public async Task<string> RedeemKeyAsync(string licenseKey)
+        {
+            string apiUrl = "http://api.synapsez.net/redeem";
+            string apiKey = GetAuthKey();
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Set custom header for the API key
+                client.DefaultRequestHeaders.Add("key", apiKey);
+                client.DefaultRequestHeaders.Add("license", licenseKey);
+
+                try
+                {
+                    // Prepare an empty body with the correct content type
+                    var content = new StringContent(string.Empty, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    // Send the POST request
+                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        if (responseContent != String.Empty)
+                        {
+                            return responseContent;
+                        }
+                        else
+                        {
+                            return "Invalid Key.";
+                        }
+                    }
+                    else
+                    {
+                        string errorContent = await response.Content.ReadAsStringAsync();
+                        return "Failed to redeem key."; 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "Failed to redeem key."; 
+                }
+            }
+        }
+
     }
 }

@@ -3,18 +3,121 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SynBootstrapper"
+        xmlns:local="clr-namespace:SynBootstrapper" 
         mc:Ignorable="d"
         Title="MainWindow" Height="358" Width="594"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" Topmost="True"
         Loaded="Window_Loaded">
 
     <Grid AutomationProperties.IsOffscreenBehavior="Onscreen" Background="#FF131313">
-        <Image x:Name="SynLogo" HorizontalAlignment="Center" Height="154" Margin="0,81,0,0" VerticalAlignment="Top" Width="422" Source="/Images/synlogoupscaled.png" Stretch="UniformToFill"/>
-        <Grid Margin="0,327,0,0" Background="#FF0A0A0A">
-            <Label x:Name="CR" Content="Copyright © 2024 SammyC. MIT License. All rights reserved." HorizontalAlignment="Left" Margin="259,0,0,0" VerticalAlignment="Center" Height="31" Width="335" Foreground="#FFAFAFAF" FontFamily="Yu Gothic UI"/>
+
+        <!-- Separate Grid for SynLogo -->
+        <Grid x:Name="LogoGrid" Visibility="Visible">
+            <Image x:Name="SynLogo" 
+               HorizontalAlignment="Center" 
+               Height="154" 
+               Margin="0,81,0,0" 
+               VerticalAlignment="Top" 
+               Width="422" 
+               Source="/Images/synlogoupscaled.png" 
+               Stretch="UniformToFill"/>
         </Grid>
-        <ProgressBar x:Name="Progress" HorizontalAlignment="Center" Height="35" Margin="0,292,0,0" VerticalAlignment="Top" Width="594" Foreground="#FFB2DEEC" Background="Transparent" BorderBrush="Transparent"/>
-        <Label x:Name="StatusLabel" Content="" HorizontalAlignment="Center" Margin="0,296,0,0" VerticalAlignment="Top" Foreground="#FFAFAFAF" FontFamily="Yu Gothic UI"/>
+
+        <Grid x:Name="LoginGrid" Visibility="Collapsed">
+            <Image x:Name="SynLogoTop" 
+               HorizontalAlignment="Center" 
+               Height="112" 
+               VerticalAlignment="Top" 
+               Width="334" 
+               Source="/Images/synlogoupscaled.png" 
+               Stretch="UniformToFill" Margin="0,24,0,0"/>
+            <Button Click="LoginFunction" x:Name="LoginButton" Margin="184,212,302,115" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="108">
+                <StackPanel Orientation="Horizontal">
+                    <local:MultiSizeImage Source="Images/padlock.png" SnapsToDevicePixels="True"  Width="13" Height="13" Margin="0,0,5,0" />
+                    <TextBlock Text="Login" Height="16" />
+                </StackPanel>
+            </Button>
+            <Label x:Name="TitleTxt" 
+               Content="Authorization" 
+               HorizontalAlignment="Center" 
+               Margin="0,132,0,0" 
+               VerticalAlignment="Top" 
+               Height="34" 
+               Width="334" 
+               Foreground="#FFAFAFAF" 
+               FontFamily="Yu Gothic UI" 
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"/>
+
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,91,0,0" Width="554">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="154*"/>
+                    <ColumnDefinition Width="123*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Outer Border with DropShadow -->
+                <Border Background="#FF252525" CornerRadius="10" BorderBrush="#FF232323" BorderThickness="2" Margin="0,81,0,-81" Grid.ColumnSpan="2">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="4" Opacity="0.5" Color="Black"/>
+                    </Border.Effect>
+
+                    <!-- Inner Border for Rounding the PasswordBox -->
+                    <Border CornerRadius="10" Background="#FF252525">
+                        <Grid>
+                            <!-- Placeholder TextBlock -->
+                            <TextBlock x:Name="PlaceholderText" Text="Please enter your key." 
+                           Foreground="#FF808080" VerticalAlignment="Center" 
+                           Margin="10,0,0,0" FontSize="14" IsHitTestVisible="False" FontFamily="Segoe UI" />
+
+                            <!-- PasswordBox -->
+                            <PasswordBox x:Name="passwordBox" Background="Transparent" 
+                             BorderThickness="0" Foreground="#FFAFAFAF" 
+                             FontSize="14" Margin="10,0,0,0"
+                             PasswordChanged="passwordBox_PasswordChanged" CaretBrush="#FF848484"/>
+                        </Grid>
+                    </Border>
+                </Border>
+            </Grid>
+            <Button x:Name="PurchaseButton" Margin="297,212,189,115" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="108">
+                <StackPanel Orientation="Horizontal">
+                    <local:MultiSizeImage Source="/Images/key.png" SnapsToDevicePixels="True"  Width="13" Height="13" Margin="0,0,5,0" />
+                    <TextBlock Text="Purchase a Key" Height="16" />
+                </StackPanel>
+            </Button>
+
+
+
+        </Grid>
+        <!-- Existing Grid for other UI elements -->
+        <Grid Margin="0,327,0,0" Background="#FF0A0A0A">
+            <Label x:Name="CR" 
+               Content="Copyright © 2024 SammyC. MIT License. All rights reserved." 
+               HorizontalAlignment="Left" 
+               Margin="259,0,0,0" 
+               VerticalAlignment="Center" 
+               Height="31" 
+               Width="335" 
+               Foreground="#FFAFAFAF" 
+               FontFamily="Yu Gothic UI"/>
+        </Grid>
+
+        <ProgressBar x:Name="Progress" 
+                 HorizontalAlignment="Center" 
+                 Height="35" 
+                 Margin="0,292,0,0" 
+                 VerticalAlignment="Top" 
+                 Width="594" 
+                 Foreground="#FFB2DEEC" 
+                 Background="Transparent" 
+                 BorderBrush="Transparent"/>
+
+        <Label x:Name="StatusLabel" 
+           Content="" 
+           HorizontalAlignment="Center" 
+           Margin="0,296,0,0" 
+           VerticalAlignment="Top" 
+           Foreground="#FFAFAFAF" 
+           FontFamily="Yu Gothic UI"/>
     </Grid>
+
 </Window>

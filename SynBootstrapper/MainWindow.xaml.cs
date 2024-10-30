@@ -6,6 +6,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.IO.Compression;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace SynBootstrapper
 {
@@ -13,6 +19,7 @@ namespace SynBootstrapper
     {
         private static readonly string downloadUrl = "https://synapsez.net/download";
         private static readonly string zipFileName = "downloadedFile.zip";
+        private static readonly string authFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "auth.syn");
 
         public MainWindow()
         {
@@ -21,12 +28,29 @@ namespace SynBootstrapper
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            StatusLabel.Content = "Checking Authorization";
+
+            await Task.Delay(500);
+            // Check if auth.syn exists in %localappdata%
+            if (!File.Exists(authFilePath))
+            {
+                Progress.Value = 10;
+                HandleMissingAuthFile();
+                return; // Stop further execution if auth file is missing
+            }
+            ContinueLoading();
+
+
+        }
+
+        private async void ContinueLoading()
+        {
             StatusLabel.Content = "Getting Data";
 
             try
             {
                 // Start the progress bar at 0
-                Progress.Value = 0;
+                //Progress.Value = 0;
 
                 StatusLabel.Content = "Downloading Synapse Z Launcher";
                 string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -93,8 +117,10 @@ namespace SynBootstrapper
                 File.Delete(zipFilePath); // Delete the downloaded zip file
 
                 StatusLabel.Content = "Initializing";
-                Progress.Value = 95;
-                await Task.Delay(1000);
+                Progress.Value = 92;
+                await Task.Delay(500);
+                StatusLabel.Content = "Setting HWID";
+                await ResetHWIDAsync();
                 Progress.Value = 100;
                 StatusLabel.Content = "Done";
                 await Task.Delay(500);
@@ -120,5 +146,267 @@ namespace SynBootstrapper
                 await Task.Delay(2000);
             }
         }
+
+        private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            // Hide the placeholder if there is text in the PasswordBox
+            PlaceholderText.Visibility = string.IsNullOrEmpty(passwordBox.Password) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+
+        private async void LoginFunction(object sender, RoutedEventArgs e)
+        {
+            string apiUrl = "http://api.synapsez.net/info";
+            string apiKey = passwordBox.Password;
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Set custom header for the API key
+                client.DefaultRequestHeaders.Add("key", apiKey);
+
+                try
+                {
+                    // Prepare an empty body with the correct content type
+                    var content = new StringContent(string.Empty, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    // Send the POST request
+                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Check for "0" or "1" response, which indicate failure
+                        if (responseContent == "0")
+                        {
+                            MessageBox.Show("Invalid Key.");
+                        }
+                        else
+                        {
+                            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                            string filePath = System.IO.Path.Combine(localAppData, "auth.syn");
+
+                            try
+                            {
+                                System.IO.File.WriteAllText(filePath, apiKey);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Failed to save key: {ex.Message}");
+                                this.Close();
+                                return;
+                            }
+
+
+                            LoginButton.IsEnabled = false;
+                            ShowLogoGrid();
+                            ContinueLoading();
+                        }
+                    }
+                    else
+                    {
+                        string errorContent = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Error: {response.StatusCode} - {response.ReasonPhrase}\n{errorContent}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+            }
+        }
+
+        public string GetAuthKey() // taken from api
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string filePath = System.IO.Path.Combine(localAppData, "auth.syn");
+
+            try
+            {
+                // Read the content of the auth.syn file
+                if (System.IO.File.Exists(filePath))
+                {
+                    return System.IO.File.ReadAllText(filePath);
+                }
+                else
+                {
+                    return string.Empty; // Return an empty string if the file doesn't exist
+                }
+            }
+            catch (Exception ex)
+            {
+                return string.Empty; // Return an empty string on error
+            }
+        }
+
+
+        public async Task<int> ResetHWIDAsync() // taken from api 
+        {
+            string apiUrl = "http://api.synapsez.net/resethwid";
+            string apiKey = GetAuthKey();
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Set custom header for the API key
+                client.DefaultRequestHeaders.Add("key", apiKey);
+
+                try
+                {
+                    // Prepare an empty body with the correct content type
+                    var content = new StringContent(string.Empty, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                    // Send the POST request
+                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        if (responseContent == "reset hwid successfully")
+                        {
+                            // Return 0 on success
+                            return 0;
+                        }
+                        else
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        string errorContent = await response.Content.ReadAsStringAsync();
+                        return 1; // Return 1 for HTTP errors
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return 1; // Return 1 for exceptions
+                }
+            }
+        }
+
+
+        private void HandleMissingAuthFile()
+        {
+            // Check if RobloxPlayerBeta.exe is running
+            bool isRobloxRunning = false;
+            foreach (var process in Process.GetProcessesByName("RobloxPlayerBeta"))
+            {
+                isRobloxRunning = true;
+                break; // Exit loop as soon as we find one instance
+            }
+
+            if (isRobloxRunning)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    "Roblox is currently open on startup. In order to login properly, Roblox must be closed. If you continue, Roblox will close.",
+                    "Warning",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Optionally, close the Roblox process if the user chooses to continue
+                    foreach (var process in Process.GetProcessesByName("RobloxPlayerBeta"))
+                    {
+                        process.Kill(); // Terminate the process
+                    }
+                }
+                else
+                {
+                    this.Close();
+                    return; // Exit the method if the user chooses not to continue
+                }
+            }
+
+            StatusLabel.Content = "Please login.";
+
+            ShowLoginGrid();
+        }
+        private void ShowLoginGrid()
+        {
+            // Create easing function for smooth animations
+            QuadraticEase easingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut };
+
+            // Create blur effects
+            BlurEffect blurEffect = new BlurEffect { Radius = 0 };
+            LoginGrid.Effect = blurEffect;
+
+            // Fade out, slide up, and blur LogoGrid
+            DoubleAnimation fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+            DoubleAnimation slideUpAnimation = new DoubleAnimation(0, -ActualHeight, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+            DoubleAnimation blurOutAnimation = new DoubleAnimation(0, 10, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+
+            fadeOutAnimation.Completed += (s, e) =>
+            {
+                LogoGrid.Visibility = Visibility.Collapsed; // Hide LogoGrid
+                LoginGrid.Visibility = Visibility.Visible; // Show LoginGrid
+
+                // Fade in, slide in, and remove blur on LoginGrid
+                DoubleAnimation fadeInAnimation = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+                DoubleAnimation slideInAnimation = new DoubleAnimation(ActualHeight, 0, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+                DoubleAnimation blurInAnimation = new DoubleAnimation(10, 0, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+
+                LoginGrid.BeginAnimation(UIElement.OpacityProperty, fadeInAnimation);
+                TranslateTransform loginTranslateTransform = new TranslateTransform(0, ActualHeight);
+                LoginGrid.RenderTransform = loginTranslateTransform;
+
+                loginTranslateTransform.BeginAnimation(TranslateTransform.YProperty, slideInAnimation);
+                blurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurInAnimation);
+            };
+
+            // Apply animations to LogoGrid
+            LogoGrid.BeginAnimation(UIElement.OpacityProperty, fadeOutAnimation);
+            LogoGrid.Effect = blurEffect;
+            TranslateTransform logoTranslateTransform = new TranslateTransform(0, 0);
+            LogoGrid.RenderTransform = logoTranslateTransform;
+            logoTranslateTransform.BeginAnimation(TranslateTransform.YProperty, slideUpAnimation);
+            blurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurOutAnimation);
+        }
+
+        private void ShowLogoGrid()
+        {
+            // Create easing function for smooth animations
+            QuadraticEase easingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut };
+
+            // Create blur effects
+            BlurEffect blurEffect = new BlurEffect { Radius = 0 };
+            LogoGrid.Effect = blurEffect;
+
+            // Fade out, slide down, and blur LoginGrid
+            DoubleAnimation fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+            DoubleAnimation slideDownAnimation = new DoubleAnimation(0, ActualHeight, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+            DoubleAnimation blurOutAnimation = new DoubleAnimation(0, 10, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+
+            fadeOutAnimation.Completed += (s, e) =>
+            {
+                LoginGrid.Visibility = Visibility.Collapsed; // Hide LoginGrid
+                LogoGrid.Visibility = Visibility.Visible; // Show LogoGrid
+
+                // Fade in, slide in, and remove blur on LogoGrid
+                DoubleAnimation fadeInAnimation = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+                DoubleAnimation slideInAnimation = new DoubleAnimation(-ActualHeight, 0, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+                DoubleAnimation blurInAnimation = new DoubleAnimation(10, 0, TimeSpan.FromSeconds(0.25)) { EasingFunction = easingFunction };
+
+                LogoGrid.BeginAnimation(UIElement.OpacityProperty, fadeInAnimation);
+                TranslateTransform logoTranslateTransform = new TranslateTransform(0, -ActualHeight);
+                LogoGrid.RenderTransform = logoTranslateTransform;
+
+                logoTranslateTransform.BeginAnimation(TranslateTransform.YProperty, slideInAnimation);
+                blurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurInAnimation);
+            };
+
+            // Apply animations to LoginGrid
+            LoginGrid.BeginAnimation(UIElement.OpacityProperty, fadeOutAnimation);
+            LoginGrid.Effect = blurEffect;
+            TranslateTransform loginTranslateTransform = new TranslateTransform(0, 0);
+            LoginGrid.RenderTransform = loginTranslateTransform;
+            loginTranslateTransform.BeginAnimation(TranslateTransform.YProperty, slideDownAnimation);
+            blurEffect.BeginAnimation(BlurEffect.RadiusProperty, blurOutAnimation);
+        }
+
     }
 }
