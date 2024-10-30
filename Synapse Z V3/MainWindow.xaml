@@ -117,15 +117,13 @@
                 </Grid.ColumnDefinitions>
 
 
-                <Grid Grid.ColumnSpan="4" Margin="0,0,3,39" Panel.ZIndex="1" Background="Transparent">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                <Grid Panel.ZIndex="2" Background="Transparent" Grid.ColumnSpan="6">
+
 
                     <!-- TabControl with Scrolling Tabs -->
-                    <TabControl SelectionChanged="MainTabControl_SelectionChanged" x:Name="tabControl"  Margin="0,0,143,0" Padding="0"
-                    Background="Transparent" 
-                    TabStripPlacement="Top">
+                    <TabControl SelectionChanged="MainTabControl_SelectionChanged" x:Name="tabControl" Panel.ZIndex="4" Padding="0"
+                    Background="#FF252525" 
+                    TabStripPlacement="Top" Margin="0,0,150,44">
                         <!-- Custom Style for TabControl to Enable Scrolling -->
                         <TabControl.Template>
                             <ControlTemplate TargetType="TabControl">
@@ -136,13 +134,16 @@
                                     </Grid.RowDefinitions>
 
                                     <!-- Tab Header Panel with ScrollViewer -->
-                                    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" 
-                                      CanContentScroll="True">
+                                    <ScrollViewer Background="#FF252525" Panel.ZIndex="5" Grid.Row="0" 
+                                          HorizontalScrollBarVisibility="Hidden" 
+                                          VerticalScrollBarVisibility="Hidden" 
+                                          CanContentScroll="True" 
+                                          PanningMode="HorizontalOnly">
                                         <TabPanel x:Name="HeaderPanel"
-                                      IsItemsHost="True"
-                                      Panel.ZIndex="1"
-                                      Background="Transparent"
-                                      HorizontalAlignment="Left">
+                                              IsItemsHost="True"
+                                              Panel.ZIndex="1"
+                                              Background="Transparent"
+                                              HorizontalAlignment="Left">
                                         </TabPanel>
                                     </ScrollViewer>
 
@@ -338,10 +339,7 @@
 
                 </Grid>
                 <Grid Panel.ZIndex="3" Grid.Column="1" Grid.ColumnSpan="5" Width="152" Background="#FF252525" Margin="473,0,0,0" HorizontalAlignment="Right">
-                    <Grid.Effect>
-                        <DropShadowEffect BlurRadius="6" ShadowDepth="4" Direction="180" Opacity="0.2" Color="Black" />
-                    </Grid.Effect>
-
+                   
                     <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
                   PanningMode="Both" Width="152" Background="#00000000" HorizontalAlignment="Left">
                         <StackPanel Width="152" HorizontalAlignment="Right">
@@ -432,7 +430,11 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
-
+                <Grid Panel.ZIndex="2" Grid.Column="1" Grid.ColumnSpan="5" Width="152" Background="#FF252525" Margin="0,288,0,0" HorizontalAlignment="Right">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="6" ShadowDepth="4" Direction="180" Opacity="0.2" Color="Black" />
+                </Grid.Effect>
+                </Grid>
             </Grid>
             <Grid x:Name="SettingsPage" Grid.Row="1" Margin="0,5,0,0" Visibility="Collapsed">
                 <Label x:Name="TimeLeft" Content="You have 0 days and 0 hours left of your subscription." HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" Height="24" Margin="0,320,0,0"/>

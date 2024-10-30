@@ -131,6 +131,29 @@ namespace SynBootstrapper
                 string uiBinPath = Path.Combine(baseDirectory, "UI-bin", "SynapseUI.exe");
                 if (File.Exists(uiBinPath))
                 {
+                    bool isRobloxRunning = false;
+                    foreach (var process in Process.GetProcessesByName("RobloxPlayerBeta"))
+                    {
+                        isRobloxRunning = true;
+                        break; // Exit loop as soon as we find one instance
+                    }
+
+                    if (isRobloxRunning)
+                    {
+                        MessageBoxResult result = MessageBox.Show(
+                            "Roblox is currently open on startup. In order to use all the UI functions properly, Roblox must be closed. If you continue, Roblox will remain open but some functions may be limited like Multi-Instance.",
+                            "Warning",
+                            MessageBoxButton.OKCancel,
+                            MessageBoxImage.Warning
+                        );
+                        if (result != MessageBoxResult.OK)
+                        { 
+                            this.Close();
+                            return; // Exit the method if the user chooses not to continue
+                        }
+                    }
+
+
                     System.Diagnostics.Process.Start(uiBinPath);
                     this.Close();
                 }
@@ -177,7 +200,6 @@ namespace SynBootstrapper
                     {
                         string responseContent = await response.Content.ReadAsStringAsync();
 
-                        // Check for "0" or "1" response, which indicate failure
                         if (responseContent == "0")
                         {
                             MessageBox.Show("Invalid Key.");
@@ -287,45 +309,13 @@ namespace SynBootstrapper
             }
         }
 
-
         private void HandleMissingAuthFile()
         {
-            // Check if RobloxPlayerBeta.exe is running
-            bool isRobloxRunning = false;
-            foreach (var process in Process.GetProcessesByName("RobloxPlayerBeta"))
-            {
-                isRobloxRunning = true;
-                break; // Exit loop as soon as we find one instance
-            }
-
-            if (isRobloxRunning)
-            {
-                MessageBoxResult result = MessageBox.Show(
-                    "Roblox is currently open on startup. In order to login properly, Roblox must be closed. If you continue, Roblox will close.",
-                    "Warning",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning
-                );
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    // Optionally, close the Roblox process if the user chooses to continue
-                    foreach (var process in Process.GetProcessesByName("RobloxPlayerBeta"))
-                    {
-                        process.Kill(); // Terminate the process
-                    }
-                }
-                else
-                {
-                    this.Close();
-                    return; // Exit the method if the user chooses not to continue
-                }
-            }
-
             StatusLabel.Content = "Please login.";
 
             ShowLoginGrid();
         }
+
         private void ShowLoginGrid()
         {
             // Create easing function for smooth animations

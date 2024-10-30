@@ -85,8 +85,6 @@
                 </StackPanel>
             </Button>
 
-
-
         </Grid>
         <!-- Existing Grid for other UI elements -->
         <Grid Margin="0,327,0,0" Background="#FF0A0A0A">
