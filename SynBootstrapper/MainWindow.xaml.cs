@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Net.NetworkInformation;
 
 namespace SynBootstrapper
 {
@@ -24,12 +25,35 @@ namespace SynBootstrapper
         public MainWindow()
         {
             InitializeComponent();
+            CheckInternetConnection();
+        }
+
+        private void CheckInternetConnection()
+        {
+            try
+            {
+                using (Ping ping = new Ping())
+                {
+                    PingReply reply = ping.Send("synapsez.net");
+
+                    if (reply.Status != IPStatus.Success)
+                    {
+                        MessageBox.Show("Failed to connect (maybe try checking your firewall?).");
+                        this.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to connect (maybe try checking your firewall?).");
+                this.Close();
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             StatusLabel.Content = "Checking Authorization";
-
+            
             await Task.Delay(500);
             // Check if auth.syn exists in %localappdata%
             if (!File.Exists(authFilePath))
