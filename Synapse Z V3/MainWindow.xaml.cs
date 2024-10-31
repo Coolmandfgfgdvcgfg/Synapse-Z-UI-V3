@@ -31,6 +31,7 @@ namespace Synapse_Z_V3
             Mutex mutex = new Mutex(true, "ROBLOX_singletonMutex");
 
             InitializeComponent();  // Initialize the UI components
+            this.Topmost = GlobalSettings.Topmost;
             string apiKey = synapseZAPI.GetAuthKey();
             if (string.IsNullOrEmpty(apiKey))
             {
@@ -923,7 +924,7 @@ namespace Synapse_Z_V3
             {
                 // Restore to normal state
                 this.WindowState = WindowState.Normal; // Restore window state
-                this.Topmost = false; // Allow other windows to be on top
+                this.Topmost = GlobalSettings.Topmost; // Allow other windows to be on top
             }
         }
 
