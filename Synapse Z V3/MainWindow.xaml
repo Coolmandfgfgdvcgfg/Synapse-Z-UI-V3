@@ -493,6 +493,8 @@
                         </Border>
                         <CheckBox x:Name="MinimapToggle" Content="Configure Minimap" Tag="Configure if the editor Minimap is off or on" 
                   Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                        <CheckBox x:Name="TabCloseConfirmationToggle" Content="Tab Close Confirmation" Tag="Configure if a confirmation prompt will show when attempting to close a tab" 
+Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
 
                         <Border x:Name="InjectionScroll" Style="{StaticResource SettingBorderStyle}" Width="NaN">
                             <StackPanel Orientation="Horizontal" Background="Transparent" Width="720" HorizontalAlignment="Left">

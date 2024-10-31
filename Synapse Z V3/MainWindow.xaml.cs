@@ -268,7 +268,30 @@ namespace Synapse_Z_V3
                 File.WriteAllText(filePath, editorContent);
             });
             UIElement astElement = FindChildByName(newTab, "Ast") as UIElement;
-            if (astElement != null) astElement.Visibility = Visibility.Collapsed;
+            if (astElement != null & astElement.Visibility == Visibility.Visible)
+            {
+                astElement.Visibility = Visibility.Collapsed;
+                var animation = new Storyboard();
+
+
+                var widthAnimation = new DoubleAnimation
+                {
+                    From = newTab.Width, // Start width (small enough not to cut off the button)
+                    To = (newTab.Width - 18), // End width
+                    Duration = TimeSpan.FromMilliseconds(300), // Animation duration
+                    EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut } // Optional easing
+                };
+
+                // Set the animation target and target property
+                Storyboard.SetTarget(widthAnimation, newTab);
+                Storyboard.SetTargetProperty(widthAnimation, new PropertyPath("Width"));
+
+                // Add the widthAnimation to the storyboard
+                animation.Children.Add(widthAnimation);
+
+                // Start the animation
+                animation.Begin();
+            }
         }
 
 
@@ -337,11 +360,35 @@ namespace Synapse_Z_V3
             };
 
             // Handle message received from WebView2
-            webView.CoreWebView2.WebMessageReceived += (sender, args) =>
+            webView.CoreWebView2.WebMessageReceived += async (sender, args) =>
             {
                 string receivedText = args.TryGetWebMessageAsString();
                 UIElement astElement = FindChildByName(tab, "Ast") as UIElement;
-                if (astElement != null) astElement.Visibility = Visibility.Visible;
+                if (astElement != null & astElement.Visibility == Visibility.Collapsed)
+                {
+                    astElement.Visibility = Visibility.Visible;
+                    var animation = new Storyboard();
+
+                   
+                    var widthAnimation = new DoubleAnimation
+                    {
+                        From = tab.Width, // Start width (small enough not to cut off the button)
+                        To = (tab.Width+18), // End width
+                        Duration = TimeSpan.FromMilliseconds(300), // Animation duration
+                        EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut } // Optional easing
+                    };
+
+                    // Set the animation target and target property
+                    Storyboard.SetTarget(widthAnimation, tab);
+                    Storyboard.SetTargetProperty(widthAnimation, new PropertyPath("Width"));
+
+                    // Add the widthAnimation to the storyboard
+                    animation.Children.Add(widthAnimation);
+
+                    // Start the animation
+                    animation.Begin();
+                }
+
 
                 // You can also handle the received text here
                 // System.Diagnostics.Debug.WriteLine($"Text received from editor: {receivedText}");
@@ -582,6 +629,7 @@ namespace Synapse_Z_V3
             TransparencyToggle.IsChecked = GlobalSettings.Transparency;
             TopmostToggle.IsChecked = GlobalSettings.Topmost;
             RandomizeToggle.IsChecked = GlobalSettings.Randomize;
+            TabCloseConfirmationToggle.IsChecked = GlobalSettings.TabConfirmation;
             // Initialize other checkboxes similarly
             // Assuming you have another checkbox named OtherToggle
             // OtherToggle.IsChecked = GlobalSettings.OtherSetting; // Example for another setting
@@ -689,11 +737,12 @@ namespace Synapse_Z_V3
         private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // Start dragging the window if the left mouse button is pressed
-            if (e.ButtonState == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 this.DragMove();
             }
         }
+
 
         private void Resizer_MouseMove(object sender, MouseEventArgs e)
         {
@@ -1064,6 +1113,11 @@ namespace Synapse_Z_V3
 
                 case "AutoInjectToggle":
                     GlobalSettings.AutoInject = isChecked;
+
+                    break;
+
+                case "TabCloseConfirmationToggle":
+                    GlobalSettings.TabConfirmation = isChecked;
 
                     break;
 
