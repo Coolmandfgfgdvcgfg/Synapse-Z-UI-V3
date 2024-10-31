@@ -72,18 +72,18 @@ namespace SynZAPI
                         responseContent = responseContent.Trim();
 
                         // Attempt to convert the trimmed response content to a long
-                        if (long.TryParse(responseContent, out long totalSeconds))
+                        if (int.TryParse(responseContent, out int totalSeconds))
                         {
                             // Convert seconds to days and hours
-                            long days = totalSeconds / 86400; // 86400 seconds in a day
-                            long hours = (totalSeconds % 86400) / 3600; // 3600 seconds in an hour
+                            int days = totalSeconds / 86400; // 86400 seconds in a day
+                            int hours = (totalSeconds % 86400) / 3600; // 3600 seconds in an hour
 
                             // Format and return the desired string
                             return $"You have {days.ToString("N0")} days and {hours.ToString("N0")} hours left of your subscription.";
                         }
                         else
                         {
-                            return "Account information is not in the expected format."; // Handle parse failure
+                            return $"You have infinite days and infinite hours left of your subscription.";
                         }
                     }
                     else

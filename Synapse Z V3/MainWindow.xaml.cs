@@ -200,12 +200,14 @@ namespace Synapse_Z_V3
             }
 
             // Ask for confirmation before closing the tab
-            var result = MessageBox.Show("Are you sure you want to close this tab?", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result != MessageBoxResult.Yes)
+            if (GlobalSettings.TabConfirmation)
             {
-                return; // User canceled the close operation
+                var result = MessageBox.Show("Are you sure you want to close this tab?", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result != MessageBoxResult.Yes)
+                {
+                    return; // User canceled the close operation
+                }
             }
-
             // Remove the tab if it's valid and not the "+" tab
             if (tab != null && closeableTabs.Contains(tab))
             {
@@ -414,12 +416,14 @@ namespace Synapse_Z_V3
             }
 
             // Ask for confirmation before closing the tab
-            var result = MessageBox.Show("Are you sure you want to close this tab? All data in this tab will be lost.", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result != MessageBoxResult.Yes)
+            if (GlobalSettings.TabConfirmation)
             {
-                return; // User canceled the close operation
+                var result = MessageBox.Show("Are you sure you want to close this tab? All data in this tab will be lost.", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result != MessageBoxResult.Yes)
+                {
+                    return; // User canceled the close operation
+                }
             }
-
             // Remove the tab if it's valid and not the "+" tab
             if (tabItem != null && closeableTabs.Contains(tabItem))
             {
