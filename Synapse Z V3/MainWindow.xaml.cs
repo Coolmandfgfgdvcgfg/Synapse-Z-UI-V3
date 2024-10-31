@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Windows.Media.Effects;
 using Microsoft.Web.WebView2.Wpf;
+using System.Windows.Documents;
 
 
 namespace Synapse_Z_V3
@@ -84,41 +85,61 @@ namespace Synapse_Z_V3
             AddNewTab();
         }
 
-        private void AddNewTab()
+        private void AddNewTab(string tabName = null, string content = null)
         {
-            // Get the TabControl's resources
-            var tabControlStyle = tabControl.Resources["NormalTabItemStyle"] as Style;
+            // Define the base name for the tab if not provided
+            string baseTabName = tabName ?? "Script";
+            string newTabName = baseTabName;
+            int tabIndex = 1;
 
-            // Create a new TabItem
+            // Ensure unique tab names
+            while (tabControl.Items.Cast<TabItem>().Any(tab => tab.Header.ToString() == newTabName))
+            {
+                newTabName = $"{baseTabName} ({tabIndex++})";
+            }
+
+            // Style and create a new TabItem
             var newTab = new TabItem
             {
-                Header = "New Tab",
-                Style = tabControlStyle // Apply the style with close button
+                Header = newTabName,
+                Style = tabControl.Resources["NormalTabItemStyle"] as Style
             };
 
-            // Create a new WebView2 control
+            // Create and initialize WebView2
             var webView = new WebView2();
-
-            // Initialize the WebView2 and load the local HTML file
-            InitializeWebView(webView);
-
-            // Set the WebView2 as the content of the new tab
             newTab.Content = webView;
-
-            // Add the new WebView2 to the list
             webViewList.Add(webView);
 
-            // Add the new tab before the "+" button (second-to-last item in TabControl)
+            // Initialize the WebView with optional content
+            InitializeWebView(webView, newTab, content);
+
+            // Context menu setup
+            var contextMenu = new ContextMenu();
+            var renameMenuItem = new MenuItem { Header = "Rename" };
+            renameMenuItem.Click += (s, e) => RenameTab(newTab);
+
+            var closeTabMenuItem = new MenuItem { Header = "Close" };
+            closeTabMenuItem.Click += (s, e) => CloseTab(newTab);
+
+            var saveTabMenuItem = new MenuItem { Header = "Save" };
+            saveTabMenuItem.Click += (s, e) => SaveTab(webView, newTab);
+            contextMenu.Items.Add(renameMenuItem);
+            contextMenu.Items.Add(closeTabMenuItem);
+            contextMenu.Items.Add(saveTabMenuItem);
+            newTab.ContextMenu = contextMenu;
+
+            // Add to TabControl before the "+" button
             tabControl.Items.Insert(tabControl.Items.Count - 1, newTab);
-
-            // Select the newly added tab
             tabControl.SelectedItem = newTab;
-
             // Create the animation
             var animation = new Storyboard();
 
             // Width animation
-            double targetWidth = 100; // Set the final width you want for the tab
+            double targetWidth = Double.NaN; // Set to NaN for auto-sizing, or calculate based on content
+
+            // If you need to calculate the width based on content, you can use Measure method
+            newTab.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            targetWidth = newTab.DesiredSize.Width; // Get the desired width based on content
 
             var widthAnimation = new DoubleAnimation
             {
@@ -155,6 +176,159 @@ namespace Synapse_Z_V3
 
             // Start the animation
             animation.Begin();
+
+            // Handle right-click event to open the context menu
+            newTab.MouseRightButtonDown += (s, e) =>
+            {
+                // Ensure the context menu opens on right-click
+                newTab.ContextMenu.IsOpen = true;
+                e.Handled = true; // Mark event as handled to prevent further processing
+            };
+        }
+
+        // Sample methods for closing, renaming, and saving the tab (to be implemented)
+        private void CloseTab(TabItem tab)
+        {
+            // Ensure the "+" tab is excluded from the closeable tabs
+            var closeableTabs = tabControl.Items.OfType<TabItem>().Where(t => t.Header?.ToString() != "+").ToList();
+
+            // Prevent closing if there's only one closeable tab left
+            if (closeableTabs.Count <= 1)
+            {
+                MessageBox.Show("You cannot close the last tab.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Ask for confirmation before closing the tab
+            var result = MessageBox.Show("Are you sure you want to close this tab?", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+            {
+                return; // User canceled the close operation
+            }
+
+            // Remove the tab if it's valid and not the "+" tab
+            if (tab != null && closeableTabs.Contains(tab))
+            {
+                try
+                {
+                    // Find the corresponding WebView2 instance
+                    var webViewToRemove = tab.Content as WebView2;
+                    if (webViewToRemove != null)
+                    {
+                        // Remove the WebView2 instance from the list
+                        webViewList.Remove(webViewToRemove);
+                    }
+
+                    // Get the index of the tab to be closed
+                    int tabIndex = tabControl.Items.IndexOf(tab);
+
+                    // Remove the tab from the TabControl
+                    tabControl.Items.Remove(tab);
+
+                    // If possible, navigate to the tab at one index before the closed tab, otherwise go to the first tab
+                    int newTabIndex = tabIndex > 0 ? tabIndex - 1 : 0;
+                    tabControl.SelectedIndex = newTabIndex;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while closing the tab: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+
+        private void RenameTab(TabItem tab)
+        {
+            // Logic to rename the tab (you can show an input dialog for the new name)
+            //var newName = PromptForNewTabName(tab.Header.ToString()); // Implement your input dialog
+           // tab.Header = newName;
+        }
+
+        private void SaveTab(WebView2 webView, TabItem newTab)
+        {
+            // Define the path for the SavedTabs directory
+            string saveDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "SavedTabs");
+
+            // Create the directory if it doesn't exist
+            if (!Directory.Exists(saveDirectory))
+            {
+                Directory.CreateDirectory(saveDirectory);
+            }
+
+            // Define the file path based on the tab's name
+            string filePath = Path.Combine(saveDirectory, $"{newTab.Header}.txt");
+
+            // Get the current content of the editor
+            webView.CoreWebView2.ExecuteScriptAsync("GetText();").ContinueWith(async task =>
+            {
+                // Remove the surrounding quotes from the JSON result
+                string editorContent = (await task).Trim('"');
+
+                // Write the content to the file
+                File.WriteAllText(filePath, editorContent);
+            });
+            UIElement astElement = FindChildByName(newTab, "Ast") as UIElement;
+            if (astElement != null) astElement.Visibility = Visibility.Collapsed;
+        }
+
+
+
+        private void LoadTabs()
+        {
+            string saveDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "SavedTabs");
+
+            if (!Directory.Exists(saveDirectory)) return;
+
+            foreach (var filePath in Directory.GetFiles(saveDirectory, "*.txt"))
+            {
+                string tabName = Path.GetFileNameWithoutExtension(filePath);
+                string fileContent = File.ReadAllText(filePath);
+
+                // Add a new tab with the content loaded from file
+                AddNewTab(tabName, fileContent);
+            }
+        }
+
+        private async Task InitializeWebView(WebView2 webView, TabItem tab, string content = "")
+        {
+            await webView.EnsureCoreWebView2Async(null);
+
+            // Load local HTML file for Monaco editor
+            string htmlFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "editor.html");
+            webView.Source = new Uri(htmlFilePath);
+
+            // Set initial theme and content once WebView2 is ready
+            webView.NavigationCompleted += async (sender, args) =>
+            {
+                if (args.IsSuccess)
+                {
+                    string minimapScript = GlobalSettings.Minimap ? "switchMinimap(true);" : "switchMinimap(false);";
+                    string themeScript = "SetTheme('studio');";
+                    string contentScript = !string.IsNullOrEmpty(content) ? $"SetText(`{content}`);" : "SetText('');";
+                    string combinedScript = $"{minimapScript} {themeScript} {contentScript}";
+
+                    UIElement astElement = FindChildByName(tab, "Ast") as UIElement;
+                    if (astElement != null) astElement.Visibility = Visibility.Collapsed;
+
+                    // Execute the initial setup scripts
+                    await webView.CoreWebView2.ExecuteScriptAsync(combinedScript);
+
+                    // Call the GetEditor function to start listening for content changes
+                    string getEditorScript = "GetEditor();"; // Ensure this function is defined in your HTML
+                    await webView.CoreWebView2.ExecuteScriptAsync(getEditorScript);
+                }
+            };
+
+            // Handle message received from WebView2
+            webView.CoreWebView2.WebMessageReceived += (sender, args) =>
+            {
+                string receivedText = args.TryGetWebMessageAsString();
+                UIElement astElement = FindChildByName(tab, "Ast") as UIElement;
+                if (astElement != null) astElement.Visibility = Visibility.Visible;
+
+                // You can also handle the received text here
+                // System.Diagnostics.Debug.WriteLine($"Text received from editor: {receivedText}");
+            };
         }
 
 
@@ -171,7 +345,15 @@ namespace Synapse_Z_V3
             // Prevent closing if there's only one closeable tab left
             if (closeableTabs.Count <= 1)
             {
+                MessageBox.Show("You cannot close the last tab.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
+            }
+
+            // Ask for confirmation before closing the tab
+            var result = MessageBox.Show("Are you sure you want to close this tab? All data in this tab will be lost.", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+            {
+                return; // User canceled the close operation
             }
 
             // Remove the tab if it's valid and not the "+" tab
@@ -183,6 +365,24 @@ namespace Synapse_Z_V3
                 {
                     // Remove the WebView2 instance from the list
                     webViewList.Remove(webViewToRemove);
+                }
+
+                // Define the path for the SavedTabs directory
+                string saveDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "SavedTabs");
+                // Define the file path based on the tab's name
+                string filePath = Path.Combine(saveDirectory, $"{(string)tabItem.Header}.txt");
+
+                // Delete the save file if it exists
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        File.Delete(filePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"An error occurred while deleting the save file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
 
                 // Get the index of the tab to be closed
@@ -197,31 +397,29 @@ namespace Synapse_Z_V3
             }
         }
 
-        private async Task InitializeWebView(WebView2 webView)
+
+
+        // Helper method to find a child element by name within a specified parent
+        private DependencyObject FindChildByName(DependencyObject parent, string childName)
         {
-            await webView.EnsureCoreWebView2Async(null);
+            if (parent == null) return null;
 
-            // Load the local HTML file
-            string htmlFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "editor.html");
-            webView.Source = new Uri(htmlFilePath);
-
-            // Wait for the document to load
-            webView.NavigationCompleted += async (sender, args) =>
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
             {
-                if (args.IsSuccess)
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is FrameworkElement frameworkElement && frameworkElement.Name == childName)
                 {
-                    // Call the SetTheme function with "studio" as an argument
-                    string newprint = "print(\"Hello Sigma\")";
-                    string minimapScript = GlobalSettings.Minimap ? "switchMinimap(true);" : "switchMinimap(false);";
-                    string script = $"SetTheme('studio'); SetText('{newprint}');";
-
-                    // Combine both scripts into one execution command
-                    string combinedScript = $"{minimapScript} {script}";
-                    await webView.CoreWebView2.ExecuteScriptAsync(combinedScript);
+                    return frameworkElement;
                 }
-            };
-        }
 
+                var foundChild = FindChildByName(child, childName);
+                if (foundChild != null) return foundChild;
+            }
+
+            return null;
+        }
 
 
         private async void AnimateSplashScreen()
@@ -289,7 +487,7 @@ namespace Synapse_Z_V3
             // Animate the blur radius to 0 to fade out the blur effect
             blurEffect.BeginAnimation(BlurEffect.RadiusProperty, fadeOutBlurAnimation);
 
-            AddNewTab();
+            LoadTabs();
             // Wait for the fade out of the blur effect to complete
             await Task.Delay(500); // Match the duration of the fade out animation
 

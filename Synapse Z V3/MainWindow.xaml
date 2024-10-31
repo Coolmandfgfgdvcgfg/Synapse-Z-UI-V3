@@ -165,16 +165,20 @@
                                             <Grid>
                                                 <Border x:Name="TabBorder" 
                             Background="#252525"
-                            CornerRadius="10"
+                            CornerRadius="7"
                             Padding="10,5"
                             Margin="2"
                             BorderBrush="Transparent"
                             BorderThickness="1">
                                                     <DockPanel LastChildFill="True">
                                                         <!-- Icon Image Left of Text -->
-                                                        <custom:MultiSizeImage Source="Images/ast.png" 
-                                                   Width="8" Height="8" 
-                                                   Margin="0,0,5,0" 
+                                                        <custom:MultiSizeImage x:Name="Ast" Source="Images/ast.png" 
+                                                   Width="10" Height="10" 
+                                                   Margin="0,0,5,0"  UseLayoutRounding="True" SnapsToDevicePixels="True" 
+                                                   VerticalAlignment="Center" Visibility="Collapsed"/>
+                                                        <custom:MultiSizeImage Source="Images/omega.png" 
+                                                   Width="10" Height="10" 
+                                                   Margin="0,0,5,0" UseLayoutRounding="True" SnapsToDevicePixels="True" 
                                                    VerticalAlignment="Center"/>
 
                                                         <!-- Tab Header Text -->
@@ -182,6 +186,7 @@
                                               VerticalAlignment="Center" 
                                               ContentSource="Header"
                                               TextElement.Foreground="#FF9D9D9D"/>
+                                                        <!-- Default foreground color -->
 
                                                         <!-- Close Button -->
                                                         <Button Content="x" 
@@ -191,11 +196,11 @@
                                     Style="{StaticResource CloseButtonStyle}" 
                                     VerticalAlignment="Center" 
                                     HorizontalAlignment="Right" 
-                                    Margin="0,0,0,0"
+                                    Margin="5,0,0,0"
                                     Background="#FF333333"
                                     BorderBrush="Transparent" 
                                     Foreground="#FF9D9D9D" 
-                                    FontSize="20"/>
+                                    FontSize="35"/>
                                                     </DockPanel>
                                                 </Border>
                                             </Grid>
@@ -205,6 +210,8 @@
                                                 <!-- Selected State - Solid Gray -->
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter TargetName="TabBorder" Property="Background" Value="#FF555555"/>
+                                                    <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="White"/>
+                                                    <!-- Change text color to white when selected -->
                                                 </Trigger>
 
                                                 <!-- Hover State - Only when not selected -->
@@ -216,6 +223,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </Style>
+
 
 
 

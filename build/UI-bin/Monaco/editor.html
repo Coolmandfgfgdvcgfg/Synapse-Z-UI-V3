@@ -4378,6 +4378,16 @@
 		var ClearText = function () {editor.setValue("");}
 		var SetTheme = function (themeName) {monaco.editor.setTheme(themeName)}
 
+        var GetEditor = function () {
+            editor.getModel().onDidChangeContent((event) => {
+                const content = editor.getValue();
+                // Send content to C# when the editor changes
+                window.chrome.webview.postMessage(content);
+            });
+            return editor;
+        };
+
+
 		var setImage = function (x) {
 			document.getElementsByClassName("lines-content monaco-editor-background")[0].style.backgroundImage = "url=(" + x + ")";
 			document.getElementsByClassName("margin")[0].style.backgroundImage = "url=(" + x + ")";
@@ -4450,7 +4460,6 @@
 			setText("");
 			editor.trigger('keyboard', 'type', { text: text });
 		}
-        setImage("https://wallpapers-clan.com/wp-content/uploads/2024/03/starfall-night-sky-mountains-aesthetic-gif-preview-desktop-wallpaper.gif")
 	</script>
 </body>
 

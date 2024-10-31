@@ -39,6 +39,7 @@
     <None Remove="Images\github.png" />
     <None Remove="Images\inject.png" />
     <None Remove="Images\key.png" />
+    <None Remove="Images\omega.png" />
     <None Remove="Images\saveic.png" />
     <None Remove="Images\settingscog.png" />
     <None Remove="Images\sirmeme.mov" />
@@ -88,6 +89,7 @@
     <Resource Include="Images\github.png" />
     <Resource Include="Images\inject.png" />
     <Resource Include="Images\key.png" />
+    <Resource Include="Images\omega.png" />
     <Resource Include="Images\saveic.png" />
     <Resource Include="Images\settingscog.png" />
     <Resource Include="Images\sirmeme.mov" />
