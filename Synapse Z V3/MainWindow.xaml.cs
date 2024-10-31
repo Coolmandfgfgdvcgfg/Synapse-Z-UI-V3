@@ -277,8 +277,18 @@ namespace Synapse_Z_V3
         {
             string saveDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "SavedTabs");
 
-            if (!Directory.Exists(saveDirectory)) return;
+            // Ensure the directory exists
+            if (!Directory.Exists(saveDirectory))
+            {
+                // Add a blank tab if the directory does not exist or is empty
+                AddNewTab(); // You can customize the title and content if needed
+                return;
+            }
 
+            // Get the current count of tabs to check if any exist
+            int currentTabCount = tabControl.Items.Count;
+
+            // Load saved tabs
             foreach (var filePath in Directory.GetFiles(saveDirectory, "*.txt"))
             {
                 string tabName = Path.GetFileNameWithoutExtension(filePath);
@@ -287,7 +297,14 @@ namespace Synapse_Z_V3
                 // Add a new tab with the content loaded from file
                 AddNewTab(tabName, fileContent);
             }
+
+            // If no tabs were loaded, add a blank tab
+            if (currentTabCount == 1)
+            {
+                AddNewTab(); // You can customize the title and content if needed
+            }
         }
+
 
         private async Task InitializeWebView(WebView2 webView, TabItem tab, string content = "")
         {
