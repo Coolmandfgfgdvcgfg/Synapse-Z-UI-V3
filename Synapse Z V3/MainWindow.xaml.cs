@@ -337,7 +337,7 @@ namespace Synapse_Z_V3
             await webView.EnsureCoreWebView2Async(null);
 
             // Load local HTML file for Monaco editor
-            string htmlFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "editor.html");
+            string htmlFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "index.html");
             webView.Source = new Uri(htmlFilePath);
 
             // Set initial theme and content once WebView2 is ready
@@ -345,7 +345,7 @@ namespace Synapse_Z_V3
             {
                 if (args.IsSuccess)
                 {
-                    string minimapScript = GlobalSettings.Minimap ? "switchMinimap(true);" : "switchMinimap(false);";
+                    string minimapScript = GlobalSettings.Minimap ? "SwitchMinimap(true);" : "SwitchMinimap(false);";
                     string themeScript = "SetTheme('studio');";
                     string contentScript = !string.IsNullOrEmpty(content) ? $"SetText(`{content}`);" : "SetText('');";
                     string combinedScript = $"{minimapScript} {themeScript} {contentScript}";
@@ -1086,7 +1086,7 @@ namespace Synapse_Z_V3
             {
                 case "MinimapToggle":
                     GlobalSettings.Minimap = isChecked;
-                    string minimapScript = isChecked ? "switchMinimap(true);" : "switchMinimap(false);";
+                    string minimapScript = isChecked ? "SwitchMinimap(true);" : "SwitchMinimap(false);";
                     await ExecuteJsScriptAsync(minimapScript);
                     break;
 

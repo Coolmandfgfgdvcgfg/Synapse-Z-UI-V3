@@ -302,7 +302,7 @@
 
 
 
-                <Grid x:Name="ButtonTray" Margin="0,305,46,0" Grid.ColumnSpan="4" VerticalAlignment="Bottom">
+                <Grid x:Name="ButtonTray" Margin="0,305,46,0" Grid.ColumnSpan="4" Panel.ZIndex="3" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="39" HorizontalAlignment="Left" Margin="69,0,0,0" Width="575">
                         <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
                             <StackPanel Orientation="Horizontal">

@@ -48,10 +48,7 @@
       },
       "SynZAPI/1.0.0": {
         "runtime": {
-          "SynZAPI.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "SynZAPI.dll": {}
         }
       },
       "Microsoft.Web.WebView2.Core/1.0.2895.0": {

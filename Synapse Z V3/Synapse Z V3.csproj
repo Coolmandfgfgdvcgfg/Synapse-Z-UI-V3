@@ -627,16 +627,220 @@
     <None Update="docs\tomorrow-night.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\editor.html">
+    <None Update="Monaco\Fonts\JetBrainsMono-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\Fonts\JetBrainsMono-Regular.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ace.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-beautify.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-code_lens.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-command_bar.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-elastic_tabstops_lite.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-emmet.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-error_marker.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-hardwrap.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-inline_autocomplete.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-keybinding_menu.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-language_tools.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-linking.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-modelist.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-options.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-prompt.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-rtl.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-searchbox.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-settings_menu.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-spellcheck.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-split.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-static_highlight.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-statusbar.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-textarea.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-themelist.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\ext-whitespace.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\keybinding-emacs.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\keybinding-sublime.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\keybinding-vim.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\keybinding-vscode.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\mode-lua.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\snippets\lua.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\theme-celery.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\theme-template.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\worker-base.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\worker-json.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\js\ace\worker-lua.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\base\browser\ui\codicons\codicon\codicon.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\base\worker\workerMain.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\vs\base\worker\workerMain.js.map">
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\base.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\DataModel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\Enum.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\EnumItem.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\Enums.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\Instance.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\Model.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\RBXScriptSignal.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\ServiceProvider.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\classes\Workspace.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\functions-krnl.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\functions.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\globals.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\keywords.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\libraries\debug.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\libraries\Drawing.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\libraries\Krnl.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\libraries\math.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\libraries\table.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\libraries\task.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\modules-table.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\modules.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\params\DataModelServices.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\params\DrawingTypes.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\params\InstanceClasses.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\autocompletes\snippets.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\basic-languages\lua\lua.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\lua\snippets.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monaco\vs\basic-languages\monaco.contribution.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\editor\editor.main.css">
@@ -645,79 +849,47 @@
     <None Update="Monaco\vs\editor\editor.main.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\vs\editor\editor.main.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Monaco\vs\editor\editor.main.nls.de.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.de.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\editor\editor.main.nls.es.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.es.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Monaco\vs\editor\editor.main.nls.fr.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.fr.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\editor\editor.main.nls.it.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.it.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Monaco\vs\editor\editor.main.nls.ja.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.ja.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\editor\editor.main.nls.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Monaco\vs\editor\editor.main.nls.ko.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.ko.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\editor\editor.main.nls.ru.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.ru.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Monaco\vs\editor\editor.main.nls.zh-cn.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.zh-cn.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Monaco\vs\editor\editor.main.nls.zh-tw.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Monaco\vs\editor\editor.main.nls.zh-tw.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Monaco\vs\loader.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Monaco\vs\loader.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Monaco\vs\" />
   </ItemGroup>
 
 </Project>
