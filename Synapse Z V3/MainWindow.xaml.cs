@@ -1038,17 +1038,27 @@ namespace Synapse_Z_V3
             double visibleTopY = e.VerticalOffset;
             double visibleBottomY = visibleTopY + e.ViewportHeight;
 
-            // Dictionary to store distances to top/bottom edges
+            // Dictionary to store distances to the top or bottom edges
             var sectionDistances = new Dictionary<ToggleButton, double>();
 
-            // Calculate the distances for each section
-            sectionDistances[EditorScrollButton] = CalculateNearestDistanceToTop(EditorScroll, visibleTopY, visibleBottomY);
-            sectionDistances[InjectionScrollButton] = CalculateNearestDistanceToTop(InjectionScroll, visibleTopY, visibleBottomY);
-            sectionDistances[ConfigScrollButton] = CalculateNearestDistanceToTop(ConfigScroll, visibleTopY, visibleBottomY);
-            sectionDistances[GeneralScrollButton] = CalculateNearestDistanceToTop(GeneralScroll, visibleTopY, visibleBottomY);
+            if (visibleBottomY >= e.ExtentHeight)
+            {
+                // At the very bottom, calculate distance to the bottom
+                sectionDistances[EditorScrollButton] = CalculateDistanceToBottom(EditorScroll, visibleBottomY);
+                sectionDistances[InjectionScrollButton] = CalculateDistanceToBottom(InjectionScroll, visibleBottomY);
+                sectionDistances[ConfigScrollButton] = CalculateDistanceToBottom(ConfigScroll, visibleBottomY);
+                sectionDistances[GeneralScrollButton] = CalculateDistanceToBottom(GeneralScroll, visibleBottomY);
+            }
+            else
+            {
+                // Otherwise, calculate distance to the top
+                sectionDistances[EditorScrollButton] = CalculateDistanceToTop(EditorScroll, visibleTopY);
+                sectionDistances[InjectionScrollButton] = CalculateDistanceToTop(InjectionScroll, visibleTopY);
+                sectionDistances[ConfigScrollButton] = CalculateDistanceToTop(ConfigScroll, visibleTopY);
+                sectionDistances[GeneralScrollButton] = CalculateDistanceToTop(GeneralScroll, visibleTopY);
+            }
 
-
-            // Find the ToggleButton with the closest distance to top or bottom
+            // Find the ToggleButton with the closest distance
             var closestButton = sectionDistances.OrderBy(kvp => kvp.Value).FirstOrDefault().Key;
 
             // Update ToggleButtons, ensuring only the closest button is checked
@@ -1057,27 +1067,13 @@ namespace Synapse_Z_V3
                 button.IsChecked = (button == closestButton);
             }
         }
-        private double CalculateNearestDistanceToTop(FrameworkElement element, double visibleTopY, double visibleBottomY)
-        {
-            // Get the element's top position relative to ScrollViewer
-            GeneralTransform transform = element.TransformToAncestor(CheckboxesSettings);
-            Point elementPosition = transform.Transform(new Point(0, 0));
-            double elementTopY = elementPosition.Y;
-            double elementBottomY = elementTopY + element.ActualHeight;
 
-            // Calculate distance to top
-            double distanceToTop = Math.Abs(elementTopY - visibleTopY);
+        // Helper methods to calculate distances
+        private double CalculateDistanceToTop(FrameworkElement section, double visibleTopY)
+            => Math.Abs(section.TransformToAncestor(this).Transform(new Point(0, 0)).Y - visibleTopY);
 
-            // If the element's bottom is close to the visible bottom, return the distance to the bottom instead
-            if (elementBottomY >= visibleBottomY)
-            {
-                double distanceToBottom = Math.Abs(elementBottomY - visibleBottomY);
-                return distanceToBottom;
-            }
-
-            // Otherwise, return the distance to the top
-            return distanceToTop;
-        }
+        private double CalculateDistanceToBottom(FrameworkElement section, double visibleBottomY)
+            => Math.Abs(section.TransformToAncestor(this).Transform(new Point(0, section.ActualHeight)).Y - visibleBottomY);
 
 
         private async Task HandleCheckboxLogic(CheckBox checkBox, bool? overwriteChecked)
