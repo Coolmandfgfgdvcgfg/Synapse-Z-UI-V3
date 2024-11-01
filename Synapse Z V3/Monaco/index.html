@@ -92,6 +92,7 @@
 		var SetScroll;
 		var ShowError;
 		var Refresh;
+        var GetEditor
 
 		var SwitchMinimap;
 		var SwitchReadonly;
@@ -430,8 +431,8 @@
 				});
 			}
 
-            var GetEditor = function () {
-                editor.getModel().onDidChangeContent((event) => {
+            GetEditor = function () {
+                OnDidChangeContent((event) => {
                     const content = editor.getValue();
                     // Send content to C# when the editor changes
                     window.chrome.webview.postMessage(content);
