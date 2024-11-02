@@ -1,16 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 
 namespace SynZAPI
 {
     public class Functions
     {
+        private HashSet<int> trackedPids = new HashSet<int>(); // Track PIDs for injection status
+
         public string GetLoader()
         {
             // Get the current directory and then find the parent directory
@@ -31,6 +38,210 @@ namespace SynZAPI
             return null; // Return null if no valid executable is found
         }
 
+        public List<int> GetRunningRobloxProcesses()
+        {
+            var robloxProcesses = Process.GetProcessesByName("RobloxPlayerBeta");
+            return robloxProcesses.Select(p => p.Id).ToList();
+        }
+
+        private bool isMonitoring = false; // Track whether monitoring is active
+        private bool injecting = false;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        public async void Inject()
+        {
+            // Get the loader executable path
+            string loaderExePath = GetLoader();
+            string binFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+
+            // Locate the executable in the bin folder
+            string exePath = FindExecutableInBin(binFolderPath);
+            if (string.IsNullOrEmpty(exePath))
+            {
+                ShowMessage("Executable not found in bin folder.", "Error");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(loaderExePath))
+            {
+                ShowMessage("Loader executable not found.", "Error");
+                return;
+            }
+
+            // Get all currently running Roblox processes
+            List<int> runningRobloxPids = GetRunningRobloxProcesses();
+
+            // Check if any Roblox processes are running
+            if (runningRobloxPids.Count == 0)
+            {
+                ShowMessage("Open Roblox before injecting.", "Info");
+                return; // Exit if no Roblox processes are found
+            }
+
+            // Check if already injected into all running processes
+            bool allInjected = true;
+            foreach (int pid in runningRobloxPids)
+            {
+                if (!trackedPids.Contains(pid))
+                {
+                    allInjected = false;
+                    break;
+                }
+            }
+
+            if (allInjected)
+            {
+                ShowMessage("Already injected into all running Roblox processes.", "Info");
+                return; // Exit if already injected into all processes
+            }
+
+            if (injecting)
+            {
+                return;
+            }
+            injecting = true;
+
+            // Start the loader executable
+            Process loaderProcess = Process.Start(new ProcessStartInfo
+            {
+                FileName = loaderExePath,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+
+            // Monitor the loader process
+            await Task.Run(() => WaitForProcessAndHide(exePath));
+
+            // Inject into all running Roblox processes only once
+            foreach (int pid in runningRobloxPids)
+            {
+                if (!trackedPids.Contains(pid))
+                {
+                    trackedPids.Add(pid); // Add PID to tracked list
+                }
+            }
+
+            // Start monitoring if it's not already running
+            if (!isMonitoring)
+            {
+                isMonitoring = true;
+                Task.Run(() => MonitorTrackedProcesses());
+            }
+
+            // Wait for 7 seconds before allowing further injections
+            await Task.Delay(7000);
+            injecting = false;
+        }
+
+        private string FindExecutableInBin(string binFolderPath)
+        {
+            var exeFiles = Directory.GetFiles(binFolderPath, "*.exe");
+            return exeFiles.Length > 0 ? exeFiles[0] : null; // Return the first executable found
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        // Constants for SetWindowPos
+        private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        private const uint SWP_NOSIZE = 0x0001;
+        private const uint SWP_NOMOVE = 0x0002;
+        private const uint SWP_NOACTIVATE = 0x0010;
+
+        [DllImport("user32.dll")]
+        private static extern bool IsWindowVisible(IntPtr hWnd);
+
+        private async Task WaitForProcessAndHide(string exePath)
+        {
+            bool windowHidden = false; // Flag to indicate if the window is hidden
+
+            while (!windowHidden)
+            {
+                var processes = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(exePath));
+                if (processes.Length > 0)
+                {
+                    var hWnd = processes[0].MainWindowHandle;
+
+                    // Check if the window handle is valid
+                    if (hWnd != IntPtr.Zero)
+                    {
+                        // Move the window far off the screen to hide it
+                        SetWindowPos(hWnd, HWND_BOTTOM, -2000, -2000, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+
+                        // Hide the window explicitly
+                        ShowWindow(hWnd, SW_HIDE);
+
+                        // Check if the window is hidden
+                        if (!IsWindowVisible(hWnd))
+                        {
+                            windowHidden = true; 
+                        }
+                    }
+                }
+                await Task.Delay(1); 
+            }
+
+            injecting = false; 
+        }
+        // Import the necessary user32.dll function to hide the window
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        // Constants for window visibility
+        private const int SW_HIDE = 0;
+
+        private void MonitorTrackedProcesses()
+        {
+            while (trackedPids.Count > 0)
+            {
+                foreach (int pid in trackedPids.ToList()) 
+                {
+                    if (!IsProcessRunning(pid))
+                    {
+                        trackedPids.Remove(pid); // Remove closed PID from tracking
+                    }
+                }
+
+                Thread.Sleep(1000); // Adjust the sleep time as needed
+            }
+
+            isMonitoring = false; // Reset the monitoring state when done
+        }
+
+        // Helper method to check if a process is still running
+        private bool IsProcessRunning(int pid)
+        {
+            try
+            {
+                return Process.GetProcessById(pid) != null;
+            }
+            catch (ArgumentException)
+            {
+                return false; // Process no longer exists
+            }
+        }
+        // Helper method to show a message box
+        private void ShowMessage(string message, string title)
+        {
+            // Show a topmost message box using the Win32 API
+            MessageBox(IntPtr.Zero, message, title, 0x00000000 | 0x00040000);
+        }
+
+        // Import the necessary Win32 API method
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        private static extern int MessageBox(IntPtr hWnd, string lpText, string lpCaption, uint uType);
+
+        public bool IsInjected()
+        {
+            if (injecting == true)
+            {
+                return false;
+            }
+            // Return true if there are any tracked PIDs, otherwise return false
+            return trackedPids.Count > 0;
+        }
 
         private bool ContainsRequiredPatterns(string filePath)
             {
@@ -213,6 +424,51 @@ namespace SynZAPI
                     return "Failed to redeem key."; 
                 }
             }
+        }
+
+
+        public async Task Execute(string scriptContent, int? pid = null)
+        {
+            // Get the loader executable path
+            string loaderExePath = GetLoader();
+
+            if (string.IsNullOrEmpty(loaderExePath))
+            {
+                ShowMessage("Loader executable not found.", "Error");
+                return;
+            }
+
+            string schedulerFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "scheduler");
+
+            // Create the 'scheduler' folder if it doesn't exist
+            if (!Directory.Exists(schedulerFolderPath))
+            {
+                Directory.CreateDirectory(schedulerFolderPath);
+            }
+
+            // If a specific PID is provided, only create a file for that PID
+            if (pid.HasValue)
+            {
+                await CreateLuaFileAsync(schedulerFolderPath, pid.Value, scriptContent);
+            }
+            else
+            {
+                // If no PID is provided, create files for all tracked PIDs
+                var tasks = trackedPids.Select(trackedPid => CreateLuaFileAsync(schedulerFolderPath, trackedPid, scriptContent));
+                await Task.WhenAll(tasks);
+            }
+        }
+
+        private async Task CreateLuaFileAsync(string schedulerFolderPath, int pid, string scriptContent)
+        {
+            // Generate a random GUID
+            string randomGuid = Guid.NewGuid().ToString();
+            string fileName = $"{pid}_{randomGuid}.lua";
+            string filePath = Path.Combine(schedulerFolderPath, fileName);
+
+            // Create the Lua file with the script content
+            File.WriteAllText(filePath, scriptContent + "@@FileFullyWritten@@");
+
         }
 
     }

@@ -124,7 +124,7 @@
                     <TabControl SelectionChanged="MainTabControl_SelectionChanged" x:Name="tabControl" Panel.ZIndex="4" Padding="0"
                     Background="#FF252525" 
                     TabStripPlacement="Top" Margin="0,0,150,44">
-                        <!-- Custom Style for TabControl to Enable Scrolling -->
+                        <!-- Custom Style for TabControl to Enable Scrolling --> 
                         <TabControl.Template>
                             <ControlTemplate TargetType="TabControl">
                                 <Grid>
@@ -304,13 +304,13 @@
 
                 <Grid x:Name="ButtonTray" Margin="0,305,46,0" Grid.ColumnSpan="4" Panel.ZIndex="3" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="39" HorizontalAlignment="Left" Margin="69,0,0,0" Width="575">
-                        <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
+                        <Button x:Name="Execute" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109" IsEnabled="False" Click="Execute_Click">
                             <StackPanel Orientation="Horizontal">
                                 <custom:MultiSizeImage Source="Images/Execute.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="13" Height="13" Margin="0,0,5,0" />
                                 <TextBlock Text="Execute" Height="14" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="Clear" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
+                        <Button x:Name="Clear" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109" Click="Clear_Click">
                             <StackPanel Orientation="Horizontal">
                                 <custom:MultiSizeImage Source="Images/TrashcanSmoothed.png" UseLayoutRounding="True" SnapsToDevicePixels="True" Width="13" Height="13" Margin="0,0,5,0" />
                                 <TextBlock Text="Clear" Height="14" />
@@ -322,7 +322,7 @@
                                 <TextBlock Text="Open" Height="14" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="ExecuteFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109">
+                        <Button x:Name="ExecuteFile" Margin="5,0,0,0" Style="{StaticResource MainButtonStyle}" Background="#FF3A3A3A" Width="109" IsEnabled="False">
                             <StackPanel Orientation="Horizontal">
                                 <custom:MultiSizeImage Source="Images/filebackexecute.png" Width="20" Height="20" Margin="0,0,5,0" />
                                 <TextBlock Text="Execute File" Height="14" />
@@ -339,7 +339,7 @@
                         <Button MouseLeave="Button_MouseLeave" Click="OpenWebPageButton_Click" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Cursor="Hand">
                             <custom:MultiSizeImage Source="Images/bookico.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
                         </Button>
-                        <Button MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Cursor="Hand">
+                        <Button Click="Inject_Click" MouseLeave="Button_MouseLeave" MouseEnter="Button_MouseEnter" Style="{StaticResource TabButtonStyle}" Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Cursor="Hand">
                             <custom:MultiSizeImage Source="Images/inject.png" SnapsToDevicePixels="True" UseLayoutRounding="True" Stretch="Uniform"/>
                         </Button>
                     </StackPanel>
@@ -493,6 +493,10 @@
                         </Border>
                         <CheckBox x:Name="MinimapToggle" Content="Configure Minimap" Tag="Configure if the editor Minimap is off or on" 
                   Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                        <CheckBox x:Name="SmoothScrollingToggle" Content="Smooth Scrolling" Tag="Toggle the editor Smooth-Scrolling animation" 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
+                        <CheckBox x:Name="SmoothCaretToggle" Content="Smooth Caret" Tag="Toggle the editor Smooth-Caret animation" 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
                         <CheckBox x:Name="TabCloseConfirmationToggle" Content="Tab Close Confirmation" Tag="Configure if a confirmation prompt will show when attempting to close a tab" 
 Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
 
@@ -513,6 +517,8 @@ Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="Checked
                Foreground="White" VerticalAlignment="Center" Margin="-3,0,0,0" RenderTransformOrigin="0.028,0.46" Width="176" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Border>
+                        <CheckBox x:Name="OBSHideToggle" Content="Toggle OBS Hide" Tag="Configure if the window will be hidden from OBS or any recording/streaming software, discord etc." 
+                  Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
                         <CheckBox x:Name="TransparencyToggle" Content="Toggle Fade" Tag="Configure if the window will fade to translucent when not focused" 
                   Style="{StaticResource CustomCheckBoxStyle}"  IsChecked="False" Checked="CheckedUnchecked" Unchecked="CheckedUnchecked"/>
                         <CheckBox x:Name="TopmostToggle" Content="Toggle Topmost" Tag="Configure if the window will top most or not" 

@@ -11,7 +11,10 @@ namespace Synapse_Z_V3.Settings
         public static bool Topmost { get; set; } = true;
         public static bool Randomize { get; set; } = true;
         public static bool AutoInject { get; set; } = false;
-        public static bool TabConfirmation { get; set; } = true; // Added TabConfirmation property
+        public static bool TabConfirmation { get; set; } = true;
+        public static bool OBSHide { get; set; } = false;
+        public static bool SmoothCaret { get; set; } = true;
+        public static bool SmoothScroll { get; set; } = true; 
 
         private static readonly string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "settings.json");
 
@@ -22,7 +25,10 @@ namespace Synapse_Z_V3.Settings
             public bool Topmost { get; set; }
             public bool Randomize { get; set; }
             public bool AutoInject { get; set; }
-            public bool TabConfirmation { get; set; } // Added TabConfirmation property
+            public bool TabConfirmation { get; set; }
+            public bool OBSHide { get; set; }
+            public bool SmoothCaret { get; set; } 
+            public bool SmoothScroll { get; set; }
         }
 
         static GlobalSettings()
@@ -45,7 +51,10 @@ namespace Synapse_Z_V3.Settings
                 Topmost = Topmost,
                 Randomize = Randomize,
                 AutoInject = AutoInject,
-                TabConfirmation = TabConfirmation // Save TabConfirmation setting
+                TabConfirmation = TabConfirmation,
+                OBSHide = OBSHide,
+                SmoothCaret = SmoothCaret,
+                SmoothScroll = SmoothScroll 
             };
 
             string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
@@ -66,7 +75,10 @@ namespace Synapse_Z_V3.Settings
                     Topmost = settings.Topmost;
                     Randomize = settings.Randomize;
                     AutoInject = settings.AutoInject;
-                    TabConfirmation = settings.TabConfirmation; // Load TabConfirmation from settings
+                    TabConfirmation = settings.TabConfirmation;
+                    OBSHide = settings.OBSHide;
+                    SmoothCaret = settings.SmoothCaret;
+                    SmoothScroll = settings.SmoothScroll;
                 }
             }
         }

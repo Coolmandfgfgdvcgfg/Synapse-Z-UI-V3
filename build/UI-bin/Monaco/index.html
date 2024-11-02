@@ -88,6 +88,7 @@
 
 		var GetText;
 		var SetText;
+		var ClearText;
 		var SetTheme;
 		var SetScroll;
 		var ShowError;
@@ -105,8 +106,8 @@
 		var SwitchFontFamily;
 		var SwitchFontLigatures;
 		var AddIntellisense;
-
-
+		var ToggleSmoothScrolling;
+        var ToggleSmoothCaret;
 
 		var editor;
 		var Proposals = [];
@@ -127,6 +128,8 @@
 				}
 				return newProposals;
 			}
+
+
 
 			monaco.editor.defineTheme('Dark', {
 				base: 'vs-dark',
@@ -352,6 +355,20 @@
 				editor.setValue(x);
 			}
 
+            ClearText = function () {
+                const myText = '';
+
+                const fullRange = editor.getModel().getFullModelRange();
+
+                editor.executeEdits(null, [{
+                    text: myText,
+                    range: fullRange
+                }]);
+
+                
+                editor.pushUndoStop();
+            };
+
 			GetProposals = function () {
 				return Proposals;
 			}
@@ -382,6 +399,18 @@
 					}
 				});
 			}
+
+            ToggleSmoothScrolling = function (isEnabled) {
+                editor.updateOptions({
+                    smoothScrolling: isEnabled
+                });
+            };
+
+            ToggleSmoothCaret = function (isEnabled) {
+                editor.updateOptions({
+                    cursorSmoothCaretAnimation: isEnabled
+                });
+            };
 
 			SwitchReadonly = function (flag) {
 				editor.updateOptions({
@@ -495,6 +524,7 @@
 				SetText(Text);
 				editor.trigger('keyboard', 'type', { text: Text });
 			}
+
 
 			AddIntellisense = function (l, k, d, i) {
 				console.log(l);

@@ -15,7 +15,9 @@ using System.Collections.Generic;
 using System.Windows.Media.Effects;
 using Microsoft.Web.WebView2.Wpf;
 using System.Windows.Documents;
-
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
+using System.Text.RegularExpressions;
 
 namespace Synapse_Z_V3
 {
@@ -35,30 +37,106 @@ namespace Synapse_Z_V3
             string apiKey = synapseZAPI.GetAuthKey();
             if (string.IsNullOrEmpty(apiKey))
             {
-                // Make the UI invisible
-                this.Visibility = System.Windows.Visibility.Hidden;  // Hide the window in WPF
+                this.Visibility = System.Windows.Visibility.Hidden; 
 
-                // Show an error message box
                 MessageBox.Show("Authorization failed. Please make sure you launched the UI from the Bootstrapper.",
                                 "Error",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error);
 
-                // Close the application once the message box is closed
                 this.Close();
 
-                return; // Stop further execution
+                return; 
             }
 
             InitializeAsync();
-            AnimateSplashScreen();  // Start the splash screen animation
+            AnimateSplashScreen();
             SplashScreen.Visibility = Visibility.Visible;
             EditorPage.Visibility = Visibility.Visible;
             SettingsPage.Visibility = Visibility.Collapsed;
 
-           
+            Loaded += MainWindow_Loaded;
+            this.KeyDown += MainWindow_KeyDown;
+            StartMonitoringInjectionStatus();
         }
 
+        private async void StartMonitoringInjectionStatus()
+        {
+            // Run this task in a loop, checking every few seconds
+            while (true)
+            {
+                // Check if the process is injected
+                if (synapseZAPI.IsInjected())
+                {
+                    if (Execute.IsEnabled == false || ExecuteFile.IsEnabled == false)
+                    {
+                        Execute.IsEnabled = true;
+                        ExecuteFile.IsEnabled = true;
+                    }
+                }
+                else
+                {
+                    if (Execute.IsEnabled == true || ExecuteFile.IsEnabled == true)
+                    {
+                        Execute.IsEnabled = false;
+                        ExecuteFile.IsEnabled = false;
+                    }
+                }
+
+                // Wait for a few seconds before checking again
+                await Task.Delay(1000); // Check every 5 seconds (5000 milliseconds)
+            }
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if Control key is pressed along with S key
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if (e.Key == Key.S)
+                {
+                    // Prevent the default save dialog from appearing
+                    e.Handled = true;
+
+                    // Call the method to save the current tab
+                    SaveCurrentTab();
+                }
+            }
+        }
+
+        private void SaveCurrentTab()
+        {
+            // Get the currently selected tab
+            var selectedTab = tabControl.SelectedItem as TabItem;
+            if (selectedTab != null)
+            {
+                var webView = selectedTab.Content as WebView2;
+                if (webView != null)
+                {
+                    // Call your existing save method, passing the webView and selectedTab
+                    SaveTab(webView, selectedTab);
+                }
+            }
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Initially set capture block off
+            ToggleCapture(GlobalSettings.OBSHide);
+        }
+
+
+        private void ToggleCapture(bool enable)
+        {
+            IntPtr hwnd = new WindowInteropHelper(this).Handle;
+            SetWindowDisplayAffinity(hwnd, enable ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE);
+        }
+
+        [DllImport("user32.dll")]
+        public static extern uint SetWindowDisplayAffinity(IntPtr hwnd, uint dwAffinity);
+
+        private const uint WDA_NONE = 0x00000000; // Normal display mode
+        private const uint WDA_EXCLUDEFROMCAPTURE = 0x00000011; // Exclude from capture
         private List<WebView2> webViewList = new List<WebView2>();
         private int _lastTabIndex = 0;
 
@@ -391,16 +469,15 @@ namespace Synapse_Z_V3
                     // Start the animation
                     animation.Begin();
                 }
-
-
-                // You can also handle the received text here
-                // System.Diagnostics.Debug.WriteLine($"Text received from editor: {receivedText}");
             };
         }
 
+        private void Inject_Click(object sender, RoutedEventArgs e)
+        {
+            synapseZAPI.Inject();
+        }
 
-
-        private void CloseTabButton_Click(object sender, RoutedEventArgs e)
+            private void CloseTabButton_Click(object sender, RoutedEventArgs e)
         {
             // Find the TabItem that contains the close button
             Button closeButton = sender as Button;
@@ -570,10 +647,6 @@ namespace Synapse_Z_V3
 
         private void InitializeUI()
         {
-            // Now you can proceed with the rest of your initialization
-           
-
-
             this.ResizeMode = ResizeMode.CanResizeWithGrip;
             InitializeCheckboxStates();
 
@@ -635,9 +708,9 @@ namespace Synapse_Z_V3
             TopmostToggle.IsChecked = GlobalSettings.Topmost;
             RandomizeToggle.IsChecked = GlobalSettings.Randomize;
             TabCloseConfirmationToggle.IsChecked = GlobalSettings.TabConfirmation;
-            // Initialize other checkboxes similarly
-            // Assuming you have another checkbox named OtherToggle
-            // OtherToggle.IsChecked = GlobalSettings.OtherSetting; // Example for another setting
+            OBSHideToggle.IsChecked = GlobalSettings.OBSHide;
+            SmoothScrollingToggle.IsChecked = GlobalSettings.SmoothScroll;
+            SmoothCaretToggle.IsChecked = GlobalSettings.SmoothCaret;
             CheckAllCheckboxes();
         }
 
@@ -1090,6 +1163,18 @@ namespace Synapse_Z_V3
                     await ExecuteJsScriptAsync(minimapScript);
                     break;
 
+                case "SmoothScrollingToggle":
+                    GlobalSettings.SmoothScroll = isChecked;
+                    string Script = isChecked ? "ToggleSmoothScrolling(true);" : "ToggleSmoothScrolling(false);";
+                    await ExecuteJsScriptAsync(Script);
+                    break;
+
+                case "SmoothCaretToggle":
+                    GlobalSettings.SmoothCaret = isChecked;
+                    string Script2 = isChecked ? "ToggleSmoothCaret(true);" : "ToggleSmoothCaret(false);";
+                    await ExecuteJsScriptAsync(Script2);
+                    break;
+
                 case "TransparencyToggle":
                     GlobalSettings.Transparency = isChecked;
                     AnimateOpacity(1);
@@ -1120,6 +1205,12 @@ namespace Synapse_Z_V3
                 case "TabCloseConfirmationToggle":
                     GlobalSettings.TabConfirmation = isChecked;
 
+                    break;
+
+
+                case "OBSHideToggle":
+                    GlobalSettings.OBSHide = isChecked;
+                    ToggleCapture(isChecked);
                     break;
 
                 default:
@@ -1154,6 +1245,35 @@ namespace Synapse_Z_V3
             }
         }
 
+        private async Task ExecuteJsScriptForTabAsync(string script)
+        {
+            // Get the currently selected tab item
+            var currentTab = tabControl.SelectedItem as TabItem;
+
+            // Ensure that a tab is selected
+            if (currentTab != null)
+            {
+                // Retrieve the WebView2 instance from the current tab
+                var webView = currentTab.Content as WebView2; // Assuming WebView2 is the direct content
+
+                // Check if the WebView2 instance is valid and its CoreWebView2 is initialized
+                if (webView?.CoreWebView2 != null)
+                {
+                    // Execute the JavaScript script
+                    await webView.CoreWebView2.ExecuteScriptAsync(script);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("CoreWebView2 is not initialized for the current WebView2 instance.");
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("No tab is currently selected.");
+            }
+        }
+
+
         private async void ResetHwidClick(object sender, RoutedEventArgs e)
         {
             int result = await synapseZAPI.ResetHWIDAsync(); // Await the asynchronous method
@@ -1168,5 +1288,37 @@ namespace Synapse_Z_V3
             }
         }
 
+        private async Task<string> GetCurrentTextFromWebViewAsync()
+        {
+            var currentTab = tabControl.SelectedItem as TabItem;
+            var webView = currentTab?.Content as WebView2;
+
+            if (webView?.CoreWebView2 != null)
+            {
+                // Execute a script to get the current text (assuming you have a way to retrieve it)
+                return await webView.CoreWebView2.ExecuteScriptAsync("GetText();"); // Replace GetText() with your actual function
+            }
+
+            return null;
+        }
+
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ExecuteJsScriptForTabAsync("ClearText();");
+        }
+
+
+        private async void Execute_Click(object sender, RoutedEventArgs e)
+        {
+            string script = await GetCurrentTextFromWebViewAsync();
+            if (!string.IsNullOrEmpty(script) && script != "null")
+            {
+
+                script = script.Trim('"');
+                string unescapedString = Regex.Unescape(script);
+                Task.Run(() => synapseZAPI.Execute(unescapedString));
+            }
+        }
     }
 }
